@@ -89,12 +89,12 @@ repositories {
         }
     }
 
-//    maven {
-//        url "https://cursemaven.com"
-//        content {
-//            includeGroup "curse.maven"
-//        }
-//    }
+    maven {
+        url "https://cursemaven.com"
+        content {
+            includeGroup "curse.maven"
+        }
+    }
 }
 
 dependencies {
@@ -105,6 +105,12 @@ dependencies {
     implementation fg.deobf("maven.modrinth:guideme:$guideme_version")
     implementation fg.deobf("maven.modrinth:ae2:$ae2_version")
     runtimeOnly fg.deobf("maven.modrinth:refined-storage:$refined_storage_version")
+
+    runtimeOnly fg.deobf("curse.maven:glodium-957920:5226922")
+    runtimeOnly fg.deobf("curse.maven:applied-flux-965012:6755986")
+
+    runtimeOnly fg.deobf("curse.maven:mekanism-268560:6552911")
+    runtimeOnly fg.deobf("curse.maven:applied-mekanistics-574300:4842281")
 }
 
 mixin {
