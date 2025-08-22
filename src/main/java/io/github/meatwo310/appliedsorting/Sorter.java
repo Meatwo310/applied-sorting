@@ -3,13 +3,14 @@ package io.github.meatwo310.appliedsorting;
 import appeng.api.config.SortDir;
 import appeng.api.stacks.AEKey;
 import io.github.meatwo310.appliedsorting.config.ClientConfig;
+import io.github.meatwo310.appliedsorting.config.SortBy;
 
 import java.util.Comparator;
 import java.util.Optional;
 
 public class Sorter {
-    public static Optional<Comparator<AEKey>> sort(SortDir dir) {
-        return switch (ClientConfig.ALTERNATIVE_NAME_SORT.get()) {
+    public static Optional<Comparator<AEKey>> sort(SortDir dir, SortBy sortBy) {
+        return switch (sortBy) {
             case UNCHANGED -> Optional.empty();
             case RESOURCE_LOCATION -> byResourceLocation(dir);
             case INTERNAL_ID -> ascOrDesc(dir, AppliedSorting.ID_ASC, AppliedSorting.ID_DESC);

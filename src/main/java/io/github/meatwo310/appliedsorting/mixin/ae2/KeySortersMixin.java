@@ -4,6 +4,7 @@ import appeng.api.config.SortDir;
 import appeng.api.config.SortOrder;
 import appeng.api.stacks.AEKey;
 import io.github.meatwo310.appliedsorting.Sorter;
+import io.github.meatwo310.appliedsorting.config.ClientConfig;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
@@ -15,10 +16,12 @@ import java.util.Comparator;
 public class KeySortersMixin {
     @Inject(method = "getComparator", at = @At("RETURN"), cancellable = true)
     private static void injectComparator(SortOrder order, SortDir dir, CallbackInfoReturnable<Comparator<AEKey>> cir) {
-        if (order != SortOrder.NAME) {
-            return;
-        }
-
-        Sorter.sort(dir).ifPresent(cir::setReturnValue);
+        var sortBy = switch (order) {
+            case NAME -> ClientConfig.ALTERNATIVE_NAME_SORT.get();
+            case MOD -> ClientConfig.ALTERNATIVE_MOD_SORT.get();
+            default -> null;
+        };
+        if (sortBy == null) return;
+        Sorter.sort(dir, sortBy).ifPresent(cir::setReturnValue);
     }
 }

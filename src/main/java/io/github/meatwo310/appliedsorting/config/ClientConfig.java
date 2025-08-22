@@ -7,7 +7,11 @@ public class ClientConfig {
 
     public static final ForgeConfigSpec.EnumValue<SortBy> ALTERNATIVE_NAME_SORT = BUILDER
             .comment("Replaces the default **NAME** sorting with the selected option")
-            .defineEnum("alternativeNameSort", SortBy.INTERNAL_ID);
+            .defineEnum("alternativeNameSort", SortBy.UNCHANGED);
+
+    public static final ForgeConfigSpec.EnumValue<SortBy> ALTERNATIVE_MOD_SORT = BUILDER
+            .comment("Replaces the default **MOD** sorting with the selected option")
+            .defineEnum("alternativeModSort", SortBy.INTERNAL_ID);
 
     public static final ForgeConfigSpec.BooleanValue RESOURCE_LOCATION_MINECRAFT_FIRST = BUILDER
             .push("resourceLocation")
