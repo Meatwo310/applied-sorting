@@ -13,19 +13,19 @@ public class Sorter {
         return switch (sortBy) {
             case UNCHANGED -> Optional.empty();
             case RESOURCE_LOCATION -> byResourceLocation(dir);
-            case INTERNAL_ID -> ascOrDesc(dir, AppliedSorting.ID_ASC, AppliedSorting.ID_DESC);
+            case INTERNAL_ID -> ascOrDesc(dir, Comparators.ID_ASC, Comparators.ID_DESC);
         };
     }
 
-    public static Optional<Comparator<AEKey>> ascOrDesc(SortDir dir, Comparator<AEKey> left, Comparator<AEKey> right) {
+    private static Optional<Comparator<AEKey>> ascOrDesc(SortDir dir, Comparator<AEKey> left, Comparator<AEKey> right) {
         return Optional.of(dir == SortDir.ASCENDING ? left : right);
     }
 
-    public static Optional<Comparator<AEKey>> byResourceLocation(SortDir dir) {
+    private static Optional<Comparator<AEKey>> byResourceLocation(SortDir dir) {
         if (ClientConfig.RESOURCE_LOCATION_MINECRAFT_FIRST.get()) {
-            return ascOrDesc(dir, AppliedSorting.RESOURCELOC_ASC_MC_FIRST, AppliedSorting.RESOURCELOC_DESC_MC_LAST);
+            return ascOrDesc(dir, Comparators.RESOURCELOC_ASC_MC_FIRST, Comparators.RESOURCELOC_DESC_MC_LAST);
         } else {
-            return ascOrDesc(dir, AppliedSorting.RESOURCELOC_ASC, AppliedSorting.RESOURCELOC_DESC);
+            return ascOrDesc(dir, Comparators.RESOURCELOC_ASC, Comparators.RESOURCELOC_DESC);
         }
     }
 }
