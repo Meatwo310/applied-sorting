@@ -9,7 +9,7 @@ import java.util.Optional;
 
 public class Sorter {
     public static Optional<Comparator<AEKey>> sort(SortDir dir) {
-        return switch (ClientConfig.SORT_BY.get()) {
+        return switch (ClientConfig.ALTERNATIVE_NAME_SORT.get()) {
             case UNCHANGED -> Optional.empty();
             case RESOURCE_LOCATION -> byResourceLocation(dir);
             case INTERNAL_ID -> ascOrDesc(dir, AppliedSorting.ID_ASC, AppliedSorting.ID_DESC);

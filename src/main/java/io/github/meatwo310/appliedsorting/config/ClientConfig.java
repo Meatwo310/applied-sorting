@@ -5,9 +5,9 @@ import net.minecraftforge.common.ForgeConfigSpec;
 public class ClientConfig {
     private static final ForgeConfigSpec.Builder BUILDER = new ForgeConfigSpec.Builder();
 
-    public static final ForgeConfigSpec.EnumValue<SortBy> SORT_BY = BUILDER
-            .comment("Sort items by the specified method")
-            .defineEnum("sortBy", SortBy.INTERNAL_ID);
+    public static final ForgeConfigSpec.EnumValue<SortBy> ALTERNATIVE_NAME_SORT = BUILDER
+            .comment("Replaces the default **NAME** sorting with the selected option")
+            .defineEnum("alternativeNameSort", SortBy.INTERNAL_ID);
 
     public static final ForgeConfigSpec.BooleanValue RESOURCE_LOCATION_MINECRAFT_FIRST = BUILDER
             .push("resourceLocation")
