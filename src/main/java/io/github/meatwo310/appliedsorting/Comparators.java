@@ -19,51 +19,35 @@ public class Comparators {
     public static final Comparator<AEKey> RESOURCELOC_DESC_MC_LAST = RESOURCELOC_ASC_MC_FIRST
             .reversed();
 
-    public static final Comparator<AEKey> ID_ASC = Comparator.comparing(Comparators::getSortableInfo);
+    public static final Comparator<AEKey> ID_ASC = Comparator
+            .comparing(Comparators::isNotItem)
+            .thenComparing(Comparators::isNotFluid)
+            .thenComparing(Comparators::getTypeId, ResourceLocation::compareNamespaced)
+            .thenComparing(Comparators::getRegistryId)
+            .thenComparing(AEKey::getId, ResourceLocation::compareNamespaced);
     public static final Comparator<AEKey> ID_DESC = ID_ASC.reversed();
 
-    @SuppressWarnings("deprecation")
-    private static SortableKeyInfo getSortableInfo(AEKey key) {
-        ResourceLocation typeId = key.getType().getId();
-        int id;
-        if (key instanceof AEItemKey itemKey) {
-            id = BuiltInRegistries.ITEM.getId(itemKey.getItem());
-        } else if (key instanceof AEFluidKey fluidKey) {
-            id = BuiltInRegistries.FLUID.getId(fluidKey.getFluid());
-        } else {
-            id = 0;
-        }
-        return new SortableKeyInfo(typeId, id, key.getId());
+
+    private static boolean isNotItem(AEKey key) {
+        return !(key instanceof AEItemKey);
     }
 
-    private record SortableKeyInfo(ResourceLocation typeId, int id, ResourceLocation loc) implements Comparable<SortableKeyInfo> {
-        @Override
-        public int compareTo(SortableKeyInfo other) {
-            // 特定のResourceLocationの優先順位を設定
-            int thisPriority = getTypePriority(this.typeId);
-            int otherPriority = getTypePriority(other.typeId);
+    private static boolean isNotFluid(AEKey key) {
+        return !(key instanceof AEFluidKey);
+    }
 
-            // 優先度で比較
-            int priorityCompare = Integer.compare(thisPriority, otherPriority);
-            if (priorityCompare != 0) return priorityCompare;
-
-            // 同じ優先度の場合はtypeで比較
-            int typeCompare = this.typeId.compareNamespaced(other.typeId);
-            if (typeCompare != 0) return typeCompare;
-
-            // idで比較
-            int idCompare = Integer.compare(this.id, other.id);
-            if (idCompare != 0) return idCompare;
-
-            // locで比較
-            return this.loc.compareNamespaced(other.loc);
-        }
-
-        private static int getTypePriority(ResourceLocation typeId) {
-            String typeIdString = typeId.toString();
-            if ("ae2:i".equals(typeIdString)) return 0; // 最優先
-            if ("ae2:f".equals(typeIdString)) return 1; // 2番目
-            return Integer.MAX_VALUE; // その他
+    private static ResourceLocation getTypeId(AEKey key) {
+        return key.getType().getId();
+    }
+    
+    @SuppressWarnings("deprecation")
+    private static int getRegistryId(AEKey key) {
+        if (key instanceof AEItemKey itemKey) {
+            return BuiltInRegistries.ITEM.getId(itemKey.getItem());
+        } else if (key instanceof AEFluidKey fluidKey) {
+            return BuiltInRegistries.FLUID.getId(fluidKey.getFluid());
+        } else {
+            return 0;
         }
     }
 }
