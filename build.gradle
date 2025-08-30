@@ -111,6 +111,9 @@ dependencies {
 
     runtimeOnly fg.deobf("curse.maven:mekanism-268560:6552911")
     runtimeOnly fg.deobf("curse.maven:applied-mekanistics-574300:4842281")
+
+    runtimeOnly fg.deobf("curse.maven:catalogue-459701:4766090")
+    runtimeOnly fg.deobf("curse.maven:configured-457570:5180900")
 }
 
 mixin {
