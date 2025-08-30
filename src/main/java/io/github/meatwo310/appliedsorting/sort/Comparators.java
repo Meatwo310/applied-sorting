@@ -1,4 +1,4 @@
-package io.github.meatwo310.appliedsorting;
+package io.github.meatwo310.appliedsorting.sort;
 
 import appeng.api.stacks.AEFluidKey;
 import appeng.api.stacks.AEItemKey;

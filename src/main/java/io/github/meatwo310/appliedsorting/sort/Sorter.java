@@ -1,4 +1,4 @@
-package io.github.meatwo310.appliedsorting;
+package io.github.meatwo310.appliedsorting.sort;
 
 import appeng.api.config.SortDir;
 import appeng.api.stacks.AEKey;
@@ -11,7 +11,7 @@ import java.util.Optional;
 public class Sorter {
     public static Optional<Comparator<AEKey>> sort(SortDir dir, SortBy sortBy) {
         return switch (sortBy) {
-            case UNCHANGED -> Optional.empty();
+            case NAME, AMOUNT, MOD -> Optional.empty();
             case RESOURCE_LOCATION -> byResourceLocation(dir);
             case INTERNAL_ID -> ascOrDesc(dir, Comparators.ID_ASC, Comparators.ID_DESC);
         };
