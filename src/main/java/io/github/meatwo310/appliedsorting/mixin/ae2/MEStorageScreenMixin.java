@@ -33,6 +33,6 @@ public abstract class MEStorageScreenMixin {
             repo.updateView();
         });
 
-        buttons.add(5, button);
+        buttons.add(2, button);
     }
 }
