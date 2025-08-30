@@ -12,6 +12,7 @@ credits="This mod is based on parts of the source code from Applied Energistics 
 authors="${mod_authors}"
 #displayTest="MATCH_VERSION"
 description='''${mod_description}'''
+displayURL="${mod_url}"
 
 [[dependencies.${mod_id}]]
 modId="forge"
