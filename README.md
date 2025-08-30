@@ -6,6 +6,10 @@
   -  **Internal ID**: Sorts based on the numerical ID assigned to items internally in the game. This generally sorts items in the order they were registered.
   -  **Resource Location**: Sorts based on the resource name, such as `minecraft:stone`.
 
+| Sort by name ☹️ (AE2's default) | Sort by ID 🥰 |
+| -- | -- |
+| <img width="870" height="600" alt="image" src="https://github.com/user-attachments/assets/b2a83324-1739-40ac-b341-ae901962670e" /> | <img width="893" height="625" alt="image" src="https://github.com/user-attachments/assets/b6b5aef5-a32a-4c3e-b02d-ae7713361287" /> |
+
 ## ℹ️ Notes
 - This mod is **client-side only**. You do not need to install it on the server.
 
