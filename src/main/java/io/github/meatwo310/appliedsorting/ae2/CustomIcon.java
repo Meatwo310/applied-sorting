@@ -38,7 +38,7 @@ public enum CustomIcon {
     SORT_BY_RESOURCE_LOCATION(16, 0);
 
     public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(
-            AppliedSorting.MOD_ID,
+            AppliedSorting.MODID,
             "textures/guis/states.png"
     );
     public static final int TEXTURE_WIDTH = 32;

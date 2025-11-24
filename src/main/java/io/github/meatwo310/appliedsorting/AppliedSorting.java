@@ -8,9 +8,9 @@ import net.neoforged.fml.config.ModConfig;
 
 import java.util.List;
 
-@Mod(AppliedSorting.MOD_ID)
+@Mod(AppliedSorting.MODID)
 public class AppliedSorting {
-    public static final String MOD_ID = "appliedsorting";
+    public static final String MODID = "appliedsorting";
 
     public AppliedSorting(ModContainer container, IEventBus eventBus) {
         container.registerConfig(ModConfig.Type.CLIENT, ClientConfig.SPEC);
