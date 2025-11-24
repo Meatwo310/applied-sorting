@@ -126,6 +126,9 @@ public abstract class CustomIconButton extends Button implements ITooltip {
 
     protected abstract Blitter getBlitter();
 
+    /**
+     * Prioritized over {@link #getIcon()} if not null.
+     */
     @Nullable
     protected Item getItemOverlay() {
         return null;
