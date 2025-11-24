@@ -20,6 +20,7 @@
  * MODFICATIONS:
  * - Meatwo310: Changed package/class name.
  * - Meatwo310: Generalized to render any icon via an abstract `getBlitter()` method.
+ * - Mochi_753: Modified to match the design of AE2 in Minecraft 1.21.1.
  *
  * See NOTICE file for license details.
  */
@@ -30,6 +31,7 @@ import appeng.client.gui.Icon;
 import appeng.client.gui.style.Blitter;
 import appeng.client.gui.widgets.ITooltip;
 import com.mojang.blaze3d.systems.RenderSystem;
+import com.mojang.blaze3d.vertex.PoseStack;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.renderer.Rect2i;
@@ -37,43 +39,36 @@ import net.minecraft.client.sounds.SoundManager;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Collections;
 import java.util.List;
 
 public abstract class CustomIconButton extends Button implements ITooltip {
-
     private boolean halfSize = false;
-
     private boolean disableClickSound = false;
-
     private boolean disableBackground = false;
 
-    public CustomIconButton(OnPress onPress) {
+    protected CustomIconButton(OnPress onPress) {
         super(0, 0, 16, 16, Component.empty(), onPress, Button.DEFAULT_NARRATION);
     }
 
-    public void setVisibility(boolean vis) {
-        this.visible = vis;
-        this.active = vis;
+    public void setVisibility(boolean visibility) {
+        this.visible = visibility;
+        this.active = visibility;
     }
 
     @Override
-    public void playDownSound(SoundManager soundHandler) {
-        if (!disableClickSound) {
-            super.playDownSound(soundHandler);
-        }
+    public void playDownSound(@NotNull SoundManager handler) {
+        if (!this.disableClickSound) super.playDownSound(handler);
     }
 
     @Override
-    public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partial) {
-
+    protected void renderWidget(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         if (this.visible) {
             Blitter blitter = this.getBlitter();
-            if (!this.active) {
-                blitter.opacity(0.5f);
-            }
+            if (!this.active) blitter.opacity(0.5F);
 
             if (this.halfSize) {
                 this.width = 8;
@@ -81,43 +76,43 @@ public abstract class CustomIconButton extends Button implements ITooltip {
             }
 
             RenderSystem.disableDepthTest();
-            RenderSystem.enableBlend(); // FIXME: This should be the _default_ state, but some vanilla widget disables
-
-            if (isFocused()) {
-                // Draw 1px border with 4 quads, don't rely on the background as it can be disabled.
-                // top
-                guiGraphics.fill(getX() - 1, getY() - 1, getX() + width + 1, getY(), 0xFFFFFFFF);
-                // left
-                guiGraphics.fill(getX() - 1, getY(), getX(), getY() + height, 0xFFFFFFFF);
-                // right
-                guiGraphics.fill(getX() + width, getY(), getX() + width + 1, getY() + height, 0xFFFFFFFF);
-                // bottom
-                guiGraphics.fill(getX() - 1, getY() + height, getX() + width + 1, getY() + height + 1, 0xFFFFFFFF);
-            }
+            RenderSystem.enableBlend();
 
             if (this.halfSize) {
-                var pose = guiGraphics.pose();
+                PoseStack pose = guiGraphics.pose();
                 pose.pushPose();
                 pose.translate(getX(), getY(), 0.0F);
                 pose.scale(0.5f, 0.5f, 1.f);
 
-                if (!disableBackground) {
-                    Icon.TOOLBAR_BUTTON_BACKGROUND.getBlitter().dest(0, 0).blit(guiGraphics);
-                }
-                blitter.dest(0, 0).blit(guiGraphics);
+                if (!disableBackground) renderBackground(guiGraphics);
+                renderIcon(guiGraphics);
                 pose.popPose();
             } else {
-                if (!disableBackground) {
-                    Icon.TOOLBAR_BUTTON_BACKGROUND.getBlitter().dest(getX(), getY()).blit(guiGraphics);
-                }
-                this.getBlitter().dest(getX(), getY()).blit(guiGraphics);
+                if (!disableBackground) renderBackground(guiGraphics);
+                renderIcon(guiGraphics);
             }
             RenderSystem.enableDepthTest();
 
-            var item = this.getItemOverlay();
-            if (item != null) {
-                guiGraphics.renderItem(new ItemStack(item), getX(), getY());
-            }
+            Item item = this.getItemOverlay();
+            if (item != null) guiGraphics.renderItem(new ItemStack(item), getX(), getY());
+        }
+    }
+
+    private void renderBackground(GuiGraphics guiGraphics) {
+        if (isHovered()) {
+            Icon.TOOLBAR_BUTTON_BACKGROUND_HOVER.getBlitter().dest(getX() - 1, getY() + 1).blit(guiGraphics);
+        } else if (isFocused()) {
+            Icon.TOOLBAR_BUTTON_BACKGROUND_FOCUS.getBlitter().dest(getX() - 1, getY()).blit(guiGraphics);
+        } else {
+            Icon.TOOLBAR_BUTTON_BACKGROUND.getBlitter().dest(getX() - 1, getY()).blit(guiGraphics);
+        }
+    }
+
+    private void renderIcon(GuiGraphics guiGraphics) {
+        if (isHovered) {
+            this.getBlitter().dest(getX(), getY() + 2).blit(guiGraphics);
+        } else {
+            this.getBlitter().dest(getX(), getY() + 1).blit(guiGraphics);
         }
     }
 
@@ -146,11 +141,7 @@ public abstract class CustomIconButton extends Button implements ITooltip {
 
     @Override
     public Rect2i getTooltipArea() {
-        return new Rect2i(
-                getX(),
-                getY(),
-                this.halfSize ? 8 : 16,
-                this.halfSize ? 8 : 16);
+        return new Rect2i(getX(), getY(), this.halfSize ? 8 : 16, this.halfSize ? 8 : 16);
     }
 
     @Override
@@ -181,5 +172,4 @@ public abstract class CustomIconButton extends Button implements ITooltip {
     public void setDisableBackground(boolean disableBackground) {
         this.disableBackground = disableBackground;
     }
-
 }

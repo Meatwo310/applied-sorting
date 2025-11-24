@@ -28,8 +28,7 @@ import appeng.core.localization.LocalizationEnum;
 
 public enum CustomButtonTooltips implements LocalizationEnum {
     InternalId("Internal ID"),
-    ResourceLocation("Resource Location")
-    ;
+    ResourceLocation("Resource Location");
 
     private final String englishText;
 

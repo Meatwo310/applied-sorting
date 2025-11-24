@@ -34,14 +34,8 @@ import net.minecraft.resources.ResourceLocation;
  * Edit in {@code assets/appliedsorting/textures/guis/states.png}.
  */
 public enum CustomIcon {
-
     SORT_BY_ID(0, 0),
     SORT_BY_RESOURCE_LOCATION(16, 0);
-
-    public final int x;
-    public final int y;
-    public final int width;
-    public final int height;
 
     public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(
             AppliedSorting.MODID,
@@ -49,6 +43,10 @@ public enum CustomIcon {
     );
     public static final int TEXTURE_WIDTH = 32;
     public static final int TEXTURE_HEIGHT = 32;
+    public final int x;
+    public final int y;
+    public final int width;
+    public final int height;
 
     CustomIcon(int x, int y) {
         this(x, y, 16, 16);

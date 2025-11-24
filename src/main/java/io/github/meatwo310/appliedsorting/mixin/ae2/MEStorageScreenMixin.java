@@ -4,7 +4,6 @@ import appeng.api.config.SortOrder;
 import appeng.client.gui.me.common.MEStorageScreen;
 import appeng.client.gui.me.common.Repo;
 import appeng.client.gui.style.ScreenStyle;
-import appeng.client.gui.style.TerminalStyle;
 import appeng.client.gui.widgets.SettingToggleButton;
 import appeng.menu.me.common.MEStorageMenu;
 import io.github.meatwo310.appliedsorting.AppliedSorting;
@@ -20,17 +19,26 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = MEStorageScreen.class, remap = false)
-public abstract class MEStorageScreenMixin {
-    @Shadow @Final private TerminalStyle style;
-    @Shadow @Final protected Repo repo;
-    @Shadow private SettingToggleButton<SortOrder> sortByToggle;
+public class MEStorageScreenMixin {
+    @Shadow
+    @Final
+    protected Repo repo;
+
+    /*
+    @Shadow
+    @Final
+    private TerminalStyle style;
+     */
+
+    @Shadow
+    private SettingToggleButton<SortOrder> sortByToggle;
 
     @Inject(method = "<init>", at = @At("RETURN"))
     private void injectButton(MEStorageMenu menu, Inventory playerInventory, Component title, ScreenStyle screenStyle, CallbackInfo ci) {
-        if (!style.isSortable()) return;
+        // if (!style.isSortable) return;
 
         var verticalToolbar = ((AEBaseScreenAccessor) this).getVerticalToolbar();
-        var buttons = ((VerticalButtonBarInvoker) verticalToolbar).getButtons();
+        var buttons = ((VerticalButtonBarAccessor) verticalToolbar).getButtons();
 
         var button = new ConfigToggleButton<>(ClientConfig.ALTERNATIVE_SORT, (btn, backwards) -> {
             btn.toggleConfig(backwards);

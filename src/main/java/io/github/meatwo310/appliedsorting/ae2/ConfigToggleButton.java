@@ -15,10 +15,12 @@
  * You should have received a copy of the GNU Lesser General Public License
  * along with Applied Energistics 2.  If not, see <http://www.gnu.org/licenses/lgpl>.
  */
+
 /*
  * MODFICATIONS:
  * - Meatwo310: Changed package/class name and texture location.
  * - Meatwo310: Heavily modified to use ForgeConfigSpec.EnumValue and support dynamic icons/tooltips.
+ * - Mochi_753: Change `ForgeConfigSpec` to `ModConfigSpec`.
  * See NOTICE file for license details.
  */
 
@@ -38,42 +40,33 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
-import net.minecraftforge.common.ForgeConfigSpec;
-import org.jetbrains.annotations.Nullable;
+import net.neoforged.neoforge.common.ModConfigSpec;
 
+import javax.annotation.Nullable;
 import java.util.*;
 import java.util.function.Predicate;
 
 public class ConfigToggleButton<T extends Enum<T>> extends CustomIconButton {
     private static Map<EnumPair<?>, ButtonAppearance> appearances;
-    private final ForgeConfigSpec.EnumValue<T> configSpec;
+    private final ModConfigSpec.EnumValue<T> configSpec;
     private final IHandler<ConfigToggleButton<T>> onPress;
     private final EnumSet<T> validValues;
     private T currentValue;
 
-    @FunctionalInterface
-    public interface IHandler<T extends ConfigToggleButton<?>> {
-        void handle(T button, boolean backwards);
-    }
-
-    public ConfigToggleButton(ForgeConfigSpec.EnumValue<T> configSpec, IHandler<ConfigToggleButton<T>> onPress) {
+    public ConfigToggleButton(ModConfigSpec.EnumValue<T> configSpec, IHandler<ConfigToggleButton<T>> onPress) {
         this(configSpec, configSpec.get(), onPress);
     }
 
-    public ConfigToggleButton(ForgeConfigSpec.EnumValue<T> configSpec, T val,
-                               IHandler<ConfigToggleButton<T>> onPress) {
+    public ConfigToggleButton(ModConfigSpec.EnumValue<T> configSpec, T val, IHandler<ConfigToggleButton<T>> onPress) {
         this(configSpec, val, t -> true, onPress);
     }
 
-    public ConfigToggleButton(ForgeConfigSpec.EnumValue<T> configSpec, T val, Predicate<T> isValidValue,
-                               IHandler<ConfigToggleButton<T>> onPress) {
+    public ConfigToggleButton(ModConfigSpec.EnumValue<T> configSpec, T val, Predicate<T> isValidValue, IHandler<ConfigToggleButton<T>> onPress) {
         super(ConfigToggleButton::onPress);
         this.onPress = onPress;
 
-        // Build a list of values (in order) that are valid w.r.t. the given predicate
         EnumSet<T> validValues = EnumSet.allOf(val.getDeclaringClass());
         validValues.removeIf(isValidValue.negate());
-//        validValues.removeIf(s -> !configSpec.getValues().contains(s));
         this.validValues = validValues;
 
         this.configSpec = configSpec;
@@ -120,16 +113,34 @@ public class ConfigToggleButton<T extends Enum<T>> extends CustomIconButton {
         }
     }
 
-    private static void onPress(Button btn) {
-        if (btn instanceof ConfigToggleButton) {
-            ((ConfigToggleButton<?>) btn).triggerPress();
+    private static void onPress(Button button) {
+        if (button instanceof ConfigToggleButton) {
+            ((ConfigToggleButton<?>) button).triggerPress();
         }
+    }
+
+    private static <T extends Enum<T>> void registerApp(Blitter blitter, ModConfigSpec.EnumValue<T> setting, T val, LocalizationEnum title, Component... tooltipLines) {
+        var lines = new ArrayList<Component>();
+        lines.add(title.text());
+        Collections.addAll(lines, tooltipLines);
+
+        appearances.put(new EnumPair<>(setting, val), new ButtonAppearance(blitter, null, lines));
+    }
+
+    private static <T extends Enum<T>> void registerApp(ItemLike item, ModConfigSpec.EnumValue<T> setting, T val, LocalizationEnum title, Component... tooltipLines) {
+        var lines = new ArrayList<Component>();
+        lines.add(title.text());
+        Collections.addAll(lines, tooltipLines);
+
+        appearances.put(new EnumPair<>(setting, val), new ButtonAppearance(null, item.asItem(), lines));
+    }
+
+    private static <T extends Enum<T>> void registerApp(Blitter blitter, ModConfigSpec.EnumValue<T> setting, T val, LocalizationEnum title, LocalizationEnum hint) {
+        registerApp(blitter, setting, val, title, hint.text());
     }
 
     private void triggerPress() {
         boolean backwards = false;
-        // This isn't great, but we don't get any information about right-clicks
-        // otherwise
         Screen currentScreen = Minecraft.getInstance().screen;
         if (currentScreen instanceof AEBaseScreen) {
             backwards = ((AEBaseScreen<?>) currentScreen).isHandlingRightClick();
@@ -137,35 +148,7 @@ public class ConfigToggleButton<T extends Enum<T>> extends CustomIconButton {
         onPress.handle(this, backwards);
     }
 
-    private static <T extends Enum<T>> void registerApp(Blitter blitter, ForgeConfigSpec.EnumValue<T> setting, T val,
-                                                        LocalizationEnum title, Component... tooltipLines) {
-        var lines = new ArrayList<Component>();
-        lines.add(title.text());
-        Collections.addAll(lines, tooltipLines);
-
-        appearances.put(
-                new EnumPair<>(setting, val),
-                new ButtonAppearance(blitter, null, lines));
-    }
-
-    private static <T extends Enum<T>> void registerApp(ItemLike item, ForgeConfigSpec.EnumValue<T> setting, T val,
-                                                        LocalizationEnum title, Component... tooltipLines) {
-        var lines = new ArrayList<Component>();
-        lines.add(title.text());
-        Collections.addAll(lines, tooltipLines);
-
-        appearances.put(
-                new EnumPair<>(setting, val),
-                new ButtonAppearance(null, item.asItem(), lines));
-    }
-
-    private static <T extends Enum<T>> void registerApp(Blitter blitter, ForgeConfigSpec.EnumValue<T> setting, T val,
-                                                        LocalizationEnum title, LocalizationEnum hint) {
-        registerApp(blitter, setting, val, title, hint.text());
-    }
-
-    @Nullable
-    private ButtonAppearance getApperance() {
+    private ButtonAppearance getAppearance() {
         if (this.configSpec != null && this.currentValue != null) {
             return appearances.get(new EnumPair<>(this.configSpec, this.currentValue));
         }
@@ -174,23 +157,23 @@ public class ConfigToggleButton<T extends Enum<T>> extends CustomIconButton {
 
     @Override
     protected Blitter getBlitter() {
-        var app = getApperance();
-        if (app != null && app.blitter != null) {
-            return app.blitter();
+        ButtonAppearance appearance = getAppearance();
+        if (appearance != null && appearance.blitter != null) {
+            return appearance.blitter();
         }
         return Icon.TOOLBAR_BUTTON_BACKGROUND.getBlitter();
     }
 
     @Override
-    protected Item getItemOverlay() {
-        var app = getApperance();
-        if (app != null && app.item != null) {
-            return app.item;
+    protected @org.jetbrains.annotations.Nullable Item getItemOverlay() {
+        ButtonAppearance appearance = getAppearance();
+        if (appearance != null && appearance.item != null) {
+            return appearance.item();
         }
         return null;
     }
 
-    public ForgeConfigSpec.EnumValue<T> getSetting() {
+    public ModConfigSpec.EnumValue<T> getSetting() {
         return this.configSpec;
     }
 
@@ -199,9 +182,7 @@ public class ConfigToggleButton<T extends Enum<T>> extends CustomIconButton {
     }
 
     public void set(T e) {
-        if (this.currentValue != e) {
-            this.currentValue = e;
-        }
+        if (this.currentValue != e) this.currentValue = e;
     }
 
     public T getNextValue(boolean backwards) {
@@ -221,12 +202,11 @@ public class ConfigToggleButton<T extends Enum<T>> extends CustomIconButton {
 
     @Override
     public List<Component> getTooltipMessage() {
-
         if (this.configSpec == null || this.currentValue == null) {
             return Collections.emptyList();
         }
 
-        var buttonAppearance = appearances.get(new EnumPair<>(this.configSpec, this.currentValue));
+        ButtonAppearance buttonAppearance = appearances.get(new EnumPair<>(this.configSpec, this.currentValue));
         if (buttonAppearance == null) {
             return Collections.singletonList(ButtonToolTips.NoSuchMessage.text());
         }
@@ -234,12 +214,15 @@ public class ConfigToggleButton<T extends Enum<T>> extends CustomIconButton {
         return buttonAppearance.tooltipLines;
     }
 
-    private static final class EnumPair<T extends Enum<T>> {
+    public interface IHandler<T extends ConfigToggleButton<?>> {
+        void handle(T button, boolean backwards);
+    }
 
-        final ForgeConfigSpec.EnumValue<T> setting;
+    private static final class EnumPair<T extends Enum<T>> {
+        final ModConfigSpec.EnumValue<T> setting;
         final T value;
 
-        public EnumPair(ForgeConfigSpec.EnumValue<T> setting, T value) {
+        public EnumPair(ModConfigSpec.EnumValue<T> setting, T value) {
             this.setting = setting;
             this.value = value;
         }
@@ -251,12 +234,8 @@ public class ConfigToggleButton<T extends Enum<T>> extends CustomIconButton {
 
         @Override
         public boolean equals(Object obj) {
-            if (obj == null) {
-                return false;
-            }
-            if (this.getClass() != obj.getClass()) {
-                return false;
-            }
+            if (obj == null) return false;
+            if (this.getClass() != obj.getClass()) return false;
             final EnumPair<?> other = (EnumPair<?>) obj;
             return other.setting == this.setting && other.value == this.value;
         }

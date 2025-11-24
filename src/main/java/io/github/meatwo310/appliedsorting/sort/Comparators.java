@@ -39,8 +39,7 @@ public class Comparators {
     private static ResourceLocation getTypeId(AEKey key) {
         return key.getType().getId();
     }
-    
-    @SuppressWarnings("deprecation")
+
     private static int getRegistryId(AEKey key) {
         if (key instanceof AEItemKey itemKey) {
             return BuiltInRegistries.ITEM.getId(itemKey.getItem());

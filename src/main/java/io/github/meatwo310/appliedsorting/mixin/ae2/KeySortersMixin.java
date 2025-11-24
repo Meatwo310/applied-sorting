@@ -17,10 +17,21 @@ import java.util.Comparator;
 
 @Mixin(targets = "appeng.client.gui.me.common.KeySorters", remap = false)
 public class KeySortersMixin {
-    @Shadow @Final public static Comparator<AEKey> NAME_ASC;
-    @Shadow @Final public static Comparator<AEKey> NAME_DESC;
-    @Shadow @Final public static Comparator<AEKey> MOD_ASC;
-    @Shadow @Final public static Comparator<AEKey> MOD_DESC;
+    @Shadow
+    @Final
+    public static Comparator<AEKey> NAME_ASC;
+
+    @Shadow
+    @Final
+    public static Comparator<AEKey> NAME_DESC;
+
+    @Shadow
+    @Final
+    public static Comparator<AEKey> MOD_ASC;
+
+    @Shadow
+    @Final
+    public static Comparator<AEKey> MOD_DESC;
 
     @Inject(method = "getComparator", at = @At("HEAD"), cancellable = true)
     private static void injectComparator(SortOrder order, SortDir dir, CallbackInfoReturnable<Comparator<AEKey>> cir) {

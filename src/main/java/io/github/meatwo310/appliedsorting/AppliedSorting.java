@@ -1,9 +1,10 @@
 package io.github.meatwo310.appliedsorting;
 
 import io.github.meatwo310.appliedsorting.config.ClientConfig;
-import net.minecraftforge.fml.common.Mod;
-import net.minecraftforge.fml.config.ModConfig;
-import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
+import net.neoforged.bus.api.IEventBus;
+import net.neoforged.fml.ModContainer;
+import net.neoforged.fml.common.Mod;
+import net.neoforged.fml.config.ModConfig;
 
 import java.util.List;
 
@@ -11,8 +12,8 @@ import java.util.List;
 public class AppliedSorting {
     public static final String MODID = "appliedsorting";
 
-    public AppliedSorting(FMLJavaModLoadingContext context) {
-        context.registerConfig(ModConfig.Type.CLIENT, ClientConfig.SPEC);
+    public AppliedSorting(ModContainer container, IEventBus eventBus) {
+        container.registerConfig(ModConfig.Type.CLIENT, ClientConfig.SPEC);
     }
 
     public static <E> int indexOfOr(List<E> list, E element, int or) {

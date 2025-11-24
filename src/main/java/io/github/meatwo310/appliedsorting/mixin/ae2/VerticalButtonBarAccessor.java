@@ -8,7 +8,7 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 import java.util.List;
 
 @Mixin(value = VerticalButtonBar.class, remap = false)
-public interface VerticalButtonBarInvoker {
+public interface VerticalButtonBarAccessor {
     @Accessor
     List<Button> getButtons();
 }
