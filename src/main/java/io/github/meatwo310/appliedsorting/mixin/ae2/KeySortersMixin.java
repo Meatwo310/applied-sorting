@@ -35,6 +35,7 @@ public class KeySortersMixin {
 
     @Inject(method = "getComparator", at = @At("HEAD"), cancellable = true)
     private static void injectComparator(SortOrder order, SortDir dir, CallbackInfoReturnable<Comparator<AEKey>> cir) {
+        // TODO: AMOUNTが設定されている場合ここまで到達できないのでなんとかする
         SortBy customOrder = ClientConfig.ALTERNATIVE_SORT.get();
         Sorter.sort(dir, customOrder).ifPresentOrElse(cir::setReturnValue, () -> {
             switch (customOrder) {
