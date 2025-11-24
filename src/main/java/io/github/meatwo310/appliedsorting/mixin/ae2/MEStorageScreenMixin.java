@@ -6,7 +6,7 @@ import appeng.client.gui.me.common.Repo;
 import appeng.client.gui.style.ScreenStyle;
 import appeng.client.gui.widgets.SettingToggleButton;
 import appeng.menu.me.common.MEStorageMenu;
-import io.github.meatwo310.appliedsorting.AppliedSortingUnofficial;
+import io.github.meatwo310.appliedsorting.AppliedSorting;
 import io.github.meatwo310.appliedsorting.ae2.ConfigToggleButton;
 import io.github.meatwo310.appliedsorting.config.ClientConfig;
 import net.minecraft.network.chat.Component;
@@ -45,7 +45,7 @@ public class MEStorageScreenMixin {
             repo.updateView();
         });
 
-        var index = AppliedSortingUnofficial.indexOfOr(buttons, sortByToggle, 2);
+        var index = AppliedSorting.indexOfOr(buttons, sortByToggle, 2);
         buttons.add(index + 1, button);
 
         if (ClientConfig.REMOVE_DEFAULT_SORT_BUTTON.get()) {

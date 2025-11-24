@@ -27,7 +27,7 @@
 package io.github.meatwo310.appliedsorting.ae2;
 
 import appeng.client.gui.style.Blitter;
-import io.github.meatwo310.appliedsorting.AppliedSortingUnofficial;
+import io.github.meatwo310.appliedsorting.AppliedSorting;
 import net.minecraft.resources.ResourceLocation;
 
 /**
@@ -38,7 +38,7 @@ public enum CustomIcon {
     SORT_BY_RESOURCE_LOCATION(16, 0);
 
     public static final ResourceLocation TEXTURE = ResourceLocation.fromNamespaceAndPath(
-            AppliedSortingUnofficial.MOD_ID,
+            AppliedSorting.MOD_ID,
             "textures/guis/states.png"
     );
     public static final int TEXTURE_WIDTH = 32;
