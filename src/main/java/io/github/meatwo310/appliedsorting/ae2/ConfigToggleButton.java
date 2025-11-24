@@ -189,11 +189,11 @@ public class ConfigToggleButton<T extends Enum<T>> extends CustomIconButton {
         return EnumCycler.rotateEnum(currentValue, backwards, validValues);
     }
 
-    @Override
-    public boolean isTooltipAreaVisible() {
-        return this.visible;
-    }
-
+    /**
+     * Util method to toggle the button and update the config value.
+     * @param backwards If true, cycle backwards.
+     * @author Meatwo310
+     */
     public void toggleConfig(boolean backwards) {
         T next = getNextValue(backwards);
         this.configSpec.set(next);

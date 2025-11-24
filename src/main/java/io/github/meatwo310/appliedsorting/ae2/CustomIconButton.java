@@ -141,6 +141,11 @@ public abstract class CustomIconButton extends Button implements ITooltip {
         return new Rect2i(getX(), getY(), this.halfSize ? 8 : 16, this.halfSize ? 8 : 16);
     }
 
+    @Override
+    public boolean isTooltipAreaVisible() {
+        return this.visible;
+    }
+
     public boolean isHalfSize() {
         return this.halfSize;
     }
