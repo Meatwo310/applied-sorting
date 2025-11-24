@@ -1,3 +1,7 @@
+🎉 Thank you for over 50k downloads! 🎉  
+~~I'll port to 1.21.1 soon™︎~~ Finally ported! Thanks to [mochi_753](https://www.curseforge.com/members/mochi_753/)!
+
+
 [GitHub](https://github.com/Meatwo310/applied-sorting) | [CurseForge](https://www.curseforge.com/minecraft/mc-mods/applied-sorting) | [Modrinth](https://modrinth.com/mod/applied-sorting)
 
 
@@ -10,10 +14,7 @@
   -  **Internal ID**: Sorts based on the numerical ID assigned to items internally in the game. This generally sorts items in the order they were registered.
   -  **Resource Location**: Sorts based on the resource name, such as `minecraft:stone`.
 
-| Sort by name ☹️ (AE2's default) | Sort by ID 🥰 |
-| -- | -- |
-| ![AE2 Terminal sorted by name](https://github.com/user-attachments/assets/b2a83324-1739-40ac-b341-ae901962670e) | ![AE2 Terminal sorted by ID](https://github.com/user-attachments/assets/b6b5aef5-a32a-4c3e-b02d-ae7713361287) |
-
+![AE2 Terminal sorted by ID](https://github.com/user-attachments/assets/b6b5aef5-a32a-4c3e-b02d-ae7713361287)
 
 ## ℹ️ Notes
 - This mod is **client-side only**. You do not need to install it on the server.
