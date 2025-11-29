@@ -1,4 +1,4 @@
-🎉 Thank you for over 50k downloads! 🎉  
+🔥 Thank you for over 100k downloads on CurseForge! 🔥  
 ~~I'll port to 1.21.1 soon™︎~~ Finally ported! Thanks to [mochi_753](https://www.curseforge.com/members/mochi_753/)!
 
 
