@@ -9,10 +9,13 @@ val refinedStorageVersion: String by project
 
 // Mod Dependencies
 dependencies {
-    modImplementation("maven.modrinth:guideme:$guidemeVersion")
-    modImplementation("maven.modrinth:ae2:$ae2Version")
-    add("runtimeMods", "maven.modrinth:guideme:$guidemeVersion")
-    add("runtimeMods", "maven.modrinth:ae2:$ae2Version")
+    fun implRuntime(dependencyNotation: Any) {
+        modImplementation(dependencyNotation)
+        runtimeMods(dependencyNotation)
+    }
+
+    implRuntime("maven.modrinth:guideme:$guidemeVersion")
+    implRuntime("maven.modrinth:ae2:$ae2Version")
 
     modRuntimeOnly("curse.maven:refined-storage-243076:4844585")
 
