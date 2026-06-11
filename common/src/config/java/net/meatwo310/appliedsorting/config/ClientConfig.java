@@ -9,25 +9,25 @@ public final class ClientConfig {
     private static final ConfigEntryBuilder BUILDER = new ConfigEntryBuilder();
 
     public static final ConfigEntry.EnumEntry<SortBy> ALTERNATIVE_SORT = BUILDER
-            .comment(ClientConfigKeys.ALTERNATIVE_SORT_COMMENT)
-            .defineEnum(ClientConfigKeys.ALTERNATIVE_SORT, ClientConfigKeys.ALTERNATIVE_SORT_DEFAULT);
+            .comment("Replaces the default sorting with the selected option")
+            .defineEnum("alternativeSort", SortBy.INTERNAL_ID);
 
     public static final ConfigEntry.BooleanEntry REMOVE_DEFAULT_SORT_BUTTON = BUILDER
-            .comment(ClientConfigKeys.REMOVE_DEFAULT_SORT_BUTTON_COMMENT)
-            .define(ClientConfigKeys.REMOVE_DEFAULT_SORT_BUTTON, ClientConfigKeys.REMOVE_DEFAULT_SORT_BUTTON_DEFAULT);
+            .comment("Removes the default sort button from the ME terminal")
+            .define("removeDefaultSortButton", true);
 
     public static final ConfigEntry.BooleanEntry RESOURCE_LOCATION_MINECRAFT_FIRST = RESOURCE_LOCATION_BUILDER
-            .comment(ClientConfigKeys.RESOURCE_LOCATION_MINECRAFT_FIRST_COMMENT)
+            .comment("Sort Minecraft items first when sorting by resource location")
             .define(
-                    ClientConfigKeys.RESOURCE_LOCATION_MINECRAFT_FIRST,
-                    ClientConfigKeys.RESOURCE_LOCATION_MINECRAFT_FIRST_DEFAULT);
+                    "minecraftFirst",
+                    true);
 
     public static final ConfigEntries ENTRIES = buildEntries();
 
     private ClientConfig() {}
 
     private static ConfigEntries buildEntries() {
-        BUILDER.category(ClientConfigKeys.RESOURCE_LOCATION, RESOURCE_LOCATION_BUILDER.build());
+        BUILDER.category("resourceLocation", RESOURCE_LOCATION_BUILDER.build());
         return BUILDER.build();
     }
 }
