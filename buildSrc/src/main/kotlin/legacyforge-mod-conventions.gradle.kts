@@ -149,6 +149,7 @@ val generateModMetadata = tasks.register<ProcessResources>("generateModMetadata"
         "mod_credits" to modCredits,
         "mod_display_url" to modDisplayUrl,
         "mod_issue_tracker_url" to modIssueTrackerUrl,
+        "ae2_version_range" to (findProperty("ae2VersionRange")?.toString() ?: ""),
     )
     inputs.properties(replaceProperties)
     expand(replaceProperties)
