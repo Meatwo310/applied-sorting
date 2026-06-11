@@ -1,3 +1,5 @@
+import org.gradle.api.provider.Provider
+
 plugins {
     id("legacyforge-mod-conventions")
     id("legacyforge-config-conventions")
@@ -6,25 +8,34 @@ plugins {
 val ae2Version: String by project
 val guidemeVersion: String by project
 val refinedStorageVersion: String by project
+val glodiumVersion: String by project
+val appliedFluxVersion: String by project
+val mekanismVersion: String by project
+val appliedMekanisticsVersion: String by project
+val catalogueVersion: String by project
+val configuredVersion: String by project
 
 // Mod Dependencies
 dependencies {
-    fun implRuntime(dependencyNotation: Any) {
-        modImplementation(dependencyNotation)
-        runtimeMods(dependencyNotation)
+    fun implRuntime(dependencyNotation: Provider<*>, requiredVersion: String) {
+        modImplementation(dependencyNotation) { version { require(requiredVersion) } }
+        runtimeMods(dependencyNotation) { version { require(requiredVersion) } }
+    }
+    fun modRuntime(dependencyNotation: Provider<*>, requiredVersion: String) {
+        modRuntimeOnly(dependencyNotation) { version { require(requiredVersion) } }
     }
 
-    implRuntime("maven.modrinth:guideme:$guidemeVersion")
-    implRuntime("maven.modrinth:ae2:$ae2Version")
+    implRuntime(libs.guideme, guidemeVersion)
+    implRuntime(libs.ae2, ae2Version)
 
-    modRuntimeOnly("curse.maven:refined-storage-243076:4844585")
+    modRuntime(libs.refinedstorage, refinedStorageVersion)
 
-    modRuntimeOnly("curse.maven:glodium-957920:5226922")
-    modRuntimeOnly("curse.maven:applied-flux-965012:7651647")
+    modRuntime(libs.glodium, glodiumVersion)
+    modRuntime(libs.appliedflux, appliedFluxVersion)
 
-    modRuntimeOnly("curse.maven:mekanism-268560:6552911")
-    modRuntimeOnly("curse.maven:applied-mekanistics-574300:7244744")
+    modRuntime(libs.mekanism, mekanismVersion)
+    modRuntime(libs.appliedmekanistics, appliedMekanisticsVersion)
 
-    modRuntimeOnly("curse.maven:catalogue-459701:4766090")
-    modRuntimeOnly("curse.maven:configured-457570:5180900")
+    modRuntime(libs.catalogue, catalogueVersion)
+    modRuntime(libs.configured, configuredVersion)
 }

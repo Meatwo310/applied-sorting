@@ -1,3 +1,5 @@
+import org.gradle.api.provider.Provider
+
 plugins {
     id("neoforge-mod-conventions")
     id("neoforge-config-conventions")
@@ -8,11 +10,11 @@ val ae2Version: String by project
 val guidemeVersion: String by project
 
 dependencies {
-    fun implRuntime(dependencyNotation: Any) {
-        implementation(dependencyNotation)
-        runtimeMods(dependencyNotation)
+    fun implRuntime(dependencyNotation: Provider<*>, requiredVersion: String) {
+        implementation(dependencyNotation) { version { require(requiredVersion) } }
+        runtimeMods(dependencyNotation) { version { require(requiredVersion) } }
     }
 
-    implRuntime("maven.modrinth:guideme:$guidemeVersion")
-    implRuntime("maven.modrinth:ae2:$ae2Version")
+    implRuntime(libs.guideme, guidemeVersion)
+    implRuntime(libs.ae2, ae2Version)
 }

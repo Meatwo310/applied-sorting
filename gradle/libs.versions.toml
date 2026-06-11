@@ -21,5 +21,13 @@ slf4j-api = { module = "org.slf4j:slf4j-api", version.ref = "slf4j-api" }
 jspecify = { module = "org.jspecify:jspecify", version.ref = "jspecify" }
 
 configured = { module = "curse.maven:configured-457570" }
+ae2 = { module = "maven.modrinth:ae2" }
+guideme = { module = "maven.modrinth:guideme" }
+refinedstorage = { module = "curse.maven:refined-storage-243076" }
+glodium = { module = "curse.maven:glodium-957920" }
+appliedflux = { module = "curse.maven:applied-flux-965012" }
+mekanism = { module = "curse.maven:mekanism-268560" }
+appliedmekanistics = { module = "curse.maven:applied-mekanistics-574300" }
+catalogue = { module = "curse.maven:catalogue-459701" }
 forgeconfigscreens = { module = "maven.modrinth:forge-config-screens" }
 modmenu = { module = "maven.modrinth:modmenu" }
