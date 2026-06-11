@@ -5,5 +5,5 @@ public enum SortBy {
     RESOURCE_LOCATION,
     NAME,
     AMOUNT,
-    MOD,
+    MOD
 }

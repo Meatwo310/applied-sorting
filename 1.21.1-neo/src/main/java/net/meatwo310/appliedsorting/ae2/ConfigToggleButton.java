@@ -19,8 +19,7 @@
 /*
  * MODFICATIONS:
  * - Meatwo310: Changed package/class name and texture location.
- * - Meatwo310: Heavily modified to use ForgeConfigSpec.EnumValue and support dynamic icons/tooltips.
- * - Mochi_753: Change `ForgeConfigSpec` to `ModConfigSpec`.
+ * - Meatwo310: Heavily modified to support dynamic config-backed icons/tooltips.
  * See NOTICE file for license details.
  */
 
@@ -33,6 +32,7 @@ import appeng.core.localization.ButtonToolTips;
 import appeng.core.localization.LocalizationEnum;
 import appeng.util.EnumCycler;
 import net.meatwo310.appliedsorting.config.ClientConfig;
+import net.meatwo310.appliedsorting.mdk.config.ConfigEntry;
 import net.meatwo310.appliedsorting.config.SortBy;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.components.Button;
@@ -40,7 +40,6 @@ import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.level.ItemLike;
-import net.neoforged.neoforge.common.ModConfigSpec;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.*;
@@ -48,20 +47,20 @@ import java.util.function.Predicate;
 
 public class ConfigToggleButton<T extends Enum<T>> extends CustomIconButton {
     private static Map<EnumPair<?>, ButtonAppearance> appearances;
-    private final ModConfigSpec.EnumValue<T> configSpec;
+    private final ConfigEntry.EnumEntry<T> configValue;
     private final IHandler<ConfigToggleButton<T>> onPress;
     private final EnumSet<T> validValues;
     private T currentValue;
 
-    public ConfigToggleButton(ModConfigSpec.EnumValue<T> configSpec, IHandler<ConfigToggleButton<T>> onPress) {
-        this(configSpec, configSpec.get(), onPress);
+    public ConfigToggleButton(ConfigEntry.EnumEntry<T> configValue, IHandler<ConfigToggleButton<T>> onPress) {
+        this(configValue, configValue.get(), onPress);
     }
 
-    public ConfigToggleButton(ModConfigSpec.EnumValue<T> configSpec, T val, IHandler<ConfigToggleButton<T>> onPress) {
-        this(configSpec, val, t -> true, onPress);
+    public ConfigToggleButton(ConfigEntry.EnumEntry<T> configValue, T val, IHandler<ConfigToggleButton<T>> onPress) {
+        this(configValue, val, t -> true, onPress);
     }
 
-    public ConfigToggleButton(ModConfigSpec.EnumValue<T> configSpec, T val, Predicate<T> isValidValue, IHandler<ConfigToggleButton<T>> onPress) {
+    public ConfigToggleButton(ConfigEntry.EnumEntry<T> configValue, T val, Predicate<T> isValidValue, IHandler<ConfigToggleButton<T>> onPress) {
         super(ConfigToggleButton::onPress);
         this.onPress = onPress;
 
@@ -69,7 +68,7 @@ public class ConfigToggleButton<T extends Enum<T>> extends CustomIconButton {
         validValues.removeIf(isValidValue.negate());
         this.validValues = validValues;
 
-        this.configSpec = configSpec;
+        this.configValue = configValue;
         this.currentValue = val;
 
         if (appearances == null) {
@@ -119,7 +118,7 @@ public class ConfigToggleButton<T extends Enum<T>> extends CustomIconButton {
         }
     }
 
-    private static <T extends Enum<T>> void registerApp(Blitter blitter, ModConfigSpec.EnumValue<T> setting, T val, LocalizationEnum title, Component... tooltipLines) {
+    private static <T extends Enum<T>> void registerApp(Blitter blitter, ConfigEntry.EnumEntry<T> setting, T val, LocalizationEnum title, Component... tooltipLines) {
         var lines = new ArrayList<Component>();
         lines.add(title.text());
         Collections.addAll(lines, tooltipLines);
@@ -127,7 +126,7 @@ public class ConfigToggleButton<T extends Enum<T>> extends CustomIconButton {
         appearances.put(new EnumPair<>(setting, val), new ButtonAppearance(blitter, null, lines));
     }
 
-    private static <T extends Enum<T>> void registerApp(ItemLike item, ModConfigSpec.EnumValue<T> setting, T val, LocalizationEnum title, Component... tooltipLines) {
+    private static <T extends Enum<T>> void registerApp(ItemLike item, ConfigEntry.EnumEntry<T> setting, T val, LocalizationEnum title, Component... tooltipLines) {
         var lines = new ArrayList<Component>();
         lines.add(title.text());
         Collections.addAll(lines, tooltipLines);
@@ -135,7 +134,7 @@ public class ConfigToggleButton<T extends Enum<T>> extends CustomIconButton {
         appearances.put(new EnumPair<>(setting, val), new ButtonAppearance(null, item.asItem(), lines));
     }
 
-    private static <T extends Enum<T>> void registerApp(Blitter blitter, ModConfigSpec.EnumValue<T> setting, T val, LocalizationEnum title, LocalizationEnum hint) {
+    private static <T extends Enum<T>> void registerApp(Blitter blitter, ConfigEntry.EnumEntry<T> setting, T val, LocalizationEnum title, LocalizationEnum hint) {
         registerApp(blitter, setting, val, title, hint.text());
     }
 
@@ -149,8 +148,8 @@ public class ConfigToggleButton<T extends Enum<T>> extends CustomIconButton {
     }
 
     private ButtonAppearance getAppearance() {
-        if (this.configSpec != null && this.currentValue != null) {
-            return appearances.get(new EnumPair<>(this.configSpec, this.currentValue));
+        if (this.configValue != null && this.currentValue != null) {
+            return appearances.get(new EnumPair<>(this.configValue, this.currentValue));
         }
         return null;
     }
@@ -173,8 +172,8 @@ public class ConfigToggleButton<T extends Enum<T>> extends CustomIconButton {
         return null;
     }
 
-    public ModConfigSpec.EnumValue<T> getSetting() {
-        return this.configSpec;
+    public ConfigEntry.EnumEntry<T> getSetting() {
+        return this.configValue;
     }
 
     public T getCurrentValue() {
@@ -196,17 +195,17 @@ public class ConfigToggleButton<T extends Enum<T>> extends CustomIconButton {
      */
     public void toggleConfig(boolean backwards) {
         T next = getNextValue(backwards);
-        this.configSpec.set(next);
+        this.configValue.set(next);
         this.set(next);
     }
 
     @Override
     public List<Component> getTooltipMessage() {
-        if (this.configSpec == null || this.currentValue == null) {
+        if (this.configValue == null || this.currentValue == null) {
             return Collections.emptyList();
         }
 
-        ButtonAppearance buttonAppearance = appearances.get(new EnumPair<>(this.configSpec, this.currentValue));
+        ButtonAppearance buttonAppearance = appearances.get(new EnumPair<>(this.configValue, this.currentValue));
         if (buttonAppearance == null) {
             return Collections.singletonList(ButtonToolTips.NoSuchMessage.text());
         }
@@ -219,10 +218,10 @@ public class ConfigToggleButton<T extends Enum<T>> extends CustomIconButton {
     }
 
     private static final class EnumPair<T extends Enum<T>> {
-        final ModConfigSpec.EnumValue<T> setting;
+        final ConfigEntry.EnumEntry<T> setting;
         final T value;
 
-        public EnumPair(ModConfigSpec.EnumValue<T> setting, T value) {
+        public EnumPair(ConfigEntry.EnumEntry<T> setting, T value) {
             this.setting = setting;
             this.value = value;
         }
