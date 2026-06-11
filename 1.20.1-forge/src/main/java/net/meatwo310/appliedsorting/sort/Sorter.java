@@ -22,7 +22,7 @@ public class Sorter {
     }
 
     private static Optional<Comparator<AEKey>> byResourceLocation(SortDir dir) {
-        if (ClientConfig.RESOURCE_LOCATION_MINECRAFT_FIRST.get()) {
+        if (ClientConfig.ByResourceLocation.MINECRAFT_FIRST.get()) {
             return ascOrDesc(dir, Comparators.RESOURCELOC_ASC_MC_FIRST, Comparators.RESOURCELOC_DESC_MC_LAST);
         } else {
             return ascOrDesc(dir, Comparators.RESOURCELOC_ASC, Comparators.RESOURCELOC_DESC);
