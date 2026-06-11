@@ -7,7 +7,7 @@ request explicitly asks for a broad update.
 
 - Decide whether the code is cross-version (`common/src/main`) or tied to one
   Minecraft version (`<mc>-common/src/main`).
-- Keep package names aligned with existing `net.meatwo310.examplemod` classes.
+- Keep package names aligned with existing `net.meatwo310.appliedsorting` classes.
 - If the shared API changes, update every loader project that calls it.
 - Build representative downstream projects:
 
