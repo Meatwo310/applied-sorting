@@ -6,7 +6,7 @@ This file maps repository locations to responsibilities.
 
 `settings.gradle.kts`
 
-- Includes every active Gradle subproject.
+- Includes every Gradle subproject that is enabled in this repository.
 - Defines `ciBuildProjectNames` as all children except `common` and `*-common`.
 - Controls which loader projects enter the build and release matrices.
 
@@ -143,8 +143,18 @@ This file maps repository locations to responsibilities.
 
 `net/meatwo310/mdk/build`
 
-- Kotlin helpers for source sets, runtime mod staging, Fabric metadata, version
-  support, and version catalog access.
+- Kotlin helpers for source sets, CI runtime mod staging, Fabric metadata,
+  dependency version actions, version support, and version catalog access.
+
+`DependencyVersionConstraints.kt`
+
+- Provides `req(version)` for `version { require(version) }` and `pin(version)`
+  for `version { strictly(version) }`.
+
+`CiRuntimeModsConvention.kt`
+
+- Creates non-transitive `ciRuntimeMods` and `collectCiRuntimeMods`.
+- Stages direct CI runtime-test jars under `<project>/build/ciRuntimeMods`.
 
 ## CI And Release
 

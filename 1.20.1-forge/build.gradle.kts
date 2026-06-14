@@ -1,4 +1,4 @@
-import org.gradle.api.provider.Provider
+import net.meatwo310.mdk.build.req
 
 plugins {
     id("legacyforge-mod-conventions")
@@ -17,25 +17,19 @@ val configuredVersion: String by project
 
 // Mod Dependencies
 dependencies {
-    fun implRuntime(dependencyNotation: Provider<*>, requiredVersion: String) {
-        modImplementation(dependencyNotation) { version { require(requiredVersion) } }
-        runtimeMods(dependencyNotation) { version { require(requiredVersion) } }
-    }
-    fun modRuntime(dependencyNotation: Provider<*>, requiredVersion: String) {
-        modRuntimeOnly(dependencyNotation) { version { require(requiredVersion) } }
-    }
+    modImplementation(libs.guideme, req(guidemeVersion))
+    ciRuntimeMods(libs.guideme, req(guidemeVersion))
+    modImplementation(libs.ae2, req(ae2Version))
+    ciRuntimeMods(libs.ae2, req(ae2Version))
 
-    implRuntime(libs.guideme, guidemeVersion)
-    implRuntime(libs.ae2, ae2Version)
+    modRuntimeOnly(libs.refinedstorage, req(refinedStorageVersion))
 
-    modRuntime(libs.refinedstorage, refinedStorageVersion)
+    modRuntimeOnly(libs.glodium, req(glodiumVersion))
+    modRuntimeOnly(libs.appliedflux, req(appliedFluxVersion))
 
-    modRuntime(libs.glodium, glodiumVersion)
-    modRuntime(libs.appliedflux, appliedFluxVersion)
+    modRuntimeOnly(libs.mekanism, req(mekanismVersion))
+    modRuntimeOnly(libs.appliedmekanistics, req(appliedMekanisticsVersion))
 
-    modRuntime(libs.mekanism, mekanismVersion)
-    modRuntime(libs.appliedmekanistics, appliedMekanisticsVersion)
-
-    modRuntime(libs.catalogue, catalogueVersion)
-    modRuntime(libs.configured, configuredVersion)
+    modRuntimeOnly(libs.catalogue, req(catalogueVersion))
+    modRuntimeOnly(libs.configured, req(configuredVersion))
 }

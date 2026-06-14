@@ -13,8 +13,8 @@ Before editing, answer these questions from the repository:
 - Does it touch only runtime code, or also config, metadata, build logic, CI, or
   release behavior?
 
-Check `settings.gradle.kts` for the real project list. Directory names that are
-not included are not build participants.
+Check `settings.gradle.kts` for the project list in the repository you are
+editing. Directory names that are not included there are not build participants.
 
 ## 2. Choose The Owning Location
 
@@ -55,7 +55,9 @@ Keep edits small and paired:
 - If metadata structure changes, update the relevant template and convention
   plugin inputs together.
 - If adding dependencies, update the relevant subproject `build.gradle.kts` and
-  version property or `libs.versions.toml` entry.
+  version property or `libs.versions.toml` entry. Use the dependency table in
+  `docs/README.md` to choose between compile, local runtime, CI runtime staging,
+  and production metadata changes.
 - If adding a project, update `settings.gradle.kts` and make sure the project
   name follows `<mc>-<loader>` or `<mc>-common`.
 
@@ -107,7 +109,7 @@ echo stop | ./gradlew :<project>:runServer
 
 ## 6. Match CI Expectations
 
-The GitHub `Build` workflow derives platform projects from
+The GitHub `Build` workflow derives platform projects from that repository's
 `settings.gradle.kts`, excluding `common` and `*-common`. A platform project
 must have:
 
@@ -116,7 +118,7 @@ must have:
 - a matching `<minecraftVersion>-common` project;
 - a numeric `javaVersion` when set;
 - buildable jars under `<project>/build/libs`;
-- optional runtime jars staged by `collectRuntimeMods`.
+- optional runtime jars staged by `collectCiRuntimeMods`.
 
 Run `writeCiBuildMatrix` whenever those assumptions might have changed.
 

@@ -1,4 +1,4 @@
-import org.gradle.api.provider.Provider
+import net.meatwo310.mdk.build.req
 
 plugins {
     id("neoforge-mod-conventions")
@@ -10,11 +10,8 @@ val ae2Version: String by project
 val guidemeVersion: String by project
 
 dependencies {
-    fun implRuntime(dependencyNotation: Provider<*>, requiredVersion: String) {
-        implementation(dependencyNotation) { version { require(requiredVersion) } }
-        runtimeMods(dependencyNotation) { version { require(requiredVersion) } }
-    }
-
-    implRuntime(libs.guideme, guidemeVersion)
-    implRuntime(libs.ae2, ae2Version)
+    implementation(libs.guideme, req(guidemeVersion))
+    ciRuntimeMods(libs.guideme, req(guidemeVersion))
+    implementation(libs.ae2, req(ae2Version))
+    ciRuntimeMods(libs.ae2, req(ae2Version))
 }

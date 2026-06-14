@@ -83,7 +83,7 @@ Build a specific platform:
 ./gradlew :26.1.2-neo:build
 ```
 
-Artifacts are written to `<subproject>/build/libs/`. Additional runtime-only mod jars declared through `runtimeMods` are collected in `<subproject>/build/runtimeMods/` for CI.
+Artifacts are written to `<subproject>/build/libs/`. Additional runtime-only mod jars declared through `ciRuntimeMods` are collected in `<subproject>/build/ciRuntimeMods/` for CI.
 
 ## Running
 
@@ -100,6 +100,41 @@ Run a server:
 ./gradlew :26.1.2-fabric:runServer
 ./gradlew :26.1.2-neo:runServer
 ```
+
+## Dependencies
+
+Use `gradle/libs.versions.toml` for shared dependency aliases, and keep target
+versions in the affected subproject's `gradle.properties`.
+
+Use `req(version)` for normal version requests and `pin(version)` only when
+Gradle must reject any other selected version:
+
+```kotlin
+import net.meatwo310.mdk.build.req
+
+val modmenuVersion: String by project
+
+dependencies {
+    modRuntimeOnly(libs.modmenu, req(modmenuVersion))
+    // Exactly the same as:
+    //   modRuntimeOnly(libs.modmenu) { version { require(modmenuVersion) } }
+}
+```
+
+Choose the dependency configuration by what needs the dependency:
+
+| Need | Fabric 1.21.11 and older | Fabric 26.1 and newer | Legacy Forge | NeoForge |
+|------|---------------------------|------------------------|--------------|----------|
+| Code imports dependency classes | `modImplementation(...)` | `implementation(...)` | `implementation(...)` | `implementation(...)` |
+| Local `runClient` / `runServer` only | `modRuntimeOnly(...)` | `runtimeOnly(...)` | `modRuntimeOnly(...)` | `runtimeOnly(...)` |
+| GitHub Actions runtime test must install the jar | `ciRuntimeMods(...)` | `ciRuntimeMods(...)` | `ciRuntimeMods(...)` | `ciRuntimeMods(...)` |
+| Code imports it and CI must install it | compile dependency plus `ciRuntimeMods(...)` | compile dependency plus `ciRuntimeMods(...)` | compile dependency plus `ciRuntimeMods(...)` | compile dependency plus `ciRuntimeMods(...)` |
+
+`ciRuntimeMods` does not affect local `runClient` / `runServer` classpaths. It only stages direct jar
+files into `<subproject>/build/ciRuntimeMods` for the GitHub Actions runtime
+test. Production loader metadata is also separate: add Fabric `depends`,
+Legacy Forge `mods.toml` dependencies, or NeoForge `neoforge.mods.toml`
+dependencies only when users must install the dependency with the released mod.
 
 ## Configuration System
 
@@ -118,21 +153,90 @@ Apply the matching config convention plugin in addition to the normal loader con
 | Fabric loader project | `fabric-config-conventions` |
 | NeoForge loader project | `neoforge-config-conventions` |
 
-These conventions wire the `config` and `configClient` outputs into the jar and into the appropriate compile/runtime classpaths. Fabric config projects also add Forge Config API Port to `implementation`/`modImplementation`, `runtimeMods`, and generated `fabric.mod.json` dependencies.
+These conventions wire the `config` and `configClient` outputs into the jar and into the appropriate compile/runtime classpaths. Fabric config projects also add Forge Config API Port to `implementation`/`modImplementation`, `ciRuntimeMods`, and generated `fabric.mod.json` dependencies.
+
+The builder supports primitive values, ranged numbers, strings, lists, enums, and nested sections. Prefer `category(...)` plus nested classes for hierarchical config; keep `push(...)` and `pop()` for low-level adapter work or unusual migration cases.
 
 ```java
+package net.meatwo310.examplemod.config;
+
+import net.meatwo310.examplemod.mdk.config.ConfigEntries;
+import net.meatwo310.examplemod.mdk.config.ConfigEntry;
+import net.meatwo310.examplemod.mdk.config.ConfigEntryBuilder;
+
+import java.util.List;
+
 public final class ServerConfig {
     private static final ConfigEntryBuilder BUILDER = new ConfigEntryBuilder();
 
     public static final ConfigEntry.BooleanEntry ENABLE_FEATURE =
-            BUILDER.comment("Enable a server feature")
+            BUILDER.comment("Enable the main server feature.")
                     .define("enableFeature", true);
 
-    public static final ConfigEntries ENTRIES = BUILDER.build();
+    public static final ConfigEntry.IntEntry MAX_STORED_ITEMS =
+            BUILDER.comment("Maximum number of stored items.")
+                    .defineInRange("maxStoredItems", 64, 1, 4096);
 
-    private ServerConfig() {}
+    public static final ConfigEntry.ListEntry<String> ALLOWED_ITEMS =
+            BUILDER.comment("Item ids accepted by the feature.")
+                    .defineList(
+                            "allowedItems",
+                            List.of("minecraft:stone"),
+                            () -> "minecraft:stone",
+                            value -> value instanceof String);
+
+    public static final ConfigEntries ADVANCED =
+            BUILDER.comment("Advanced server settings.")
+                    .category("advanced", Advanced.ENTRIES);
+
+    public static final class Advanced {
+        private static final ConfigEntryBuilder BUILDER = new ConfigEntryBuilder();
+
+        public static final ConfigEntry.BooleanEntry ENABLE_DEBUG_LOG =
+                BUILDER.comment("Enable additional debug logging.")
+                        .define("enableDebugLog", false);
+
+        public static final ConfigEntry.DoubleEntry SPAWN_RATE_MULTIPLIER =
+                BUILDER.comment("Multiplier applied to spawn rate.")
+                        .defineInRange("spawnRateMultiplier", 1.0D, 0.0D, 10.0D);
+
+        public static final ConfigEntries PERFORMANCE =
+                BUILDER.comment("Performance tuning.")
+                        .category("performance", Performance.ENTRIES);
+
+        public static final class Performance {
+            private static final ConfigEntryBuilder BUILDER = new ConfigEntryBuilder();
+
+            public static final ConfigEntry.IntEntry CACHE_SIZE =
+                    BUILDER.comment("Maximum cache size.")
+                            .defineInRange("cacheSize", 256, 0, 8192);
+
+            public static final ConfigEntries ENTRIES = BUILDER.build();
+        }
+
+        public static final ConfigEntries ENTRIES = BUILDER.build();
+    }
+
+    public static final ConfigEntries ENTRIES = BUILDER.build();
 }
 ```
+
+This produces a structure like:
+
+```toml
+enableFeature = true
+maxStoredItems = 64
+allowedItems = ["minecraft:stone"]
+
+[advanced]
+enableDebugLog = false
+spawnRateMultiplier = 1.0
+
+[advanced.performance]
+cacheSize = 256
+```
+
+Expose config files through `ConfigDeclaration` in `ModConfigs`:
 
 ```java
 public final class ModConfigs {
@@ -142,12 +246,18 @@ public final class ModConfigs {
             ConfigDeclaration.of(ConfigSide.CLIENT, ClientConfig.ENTRIES, "examplemod-client-special.toml");
 
     public static final List<ConfigDeclaration> ALL = List.of(SERVER, CLIENT);
-
-    private ModConfigs() {}
 }
 ```
 
-`ConfigSide.SERVER`, `ConfigSide.CLIENT`, and `ConfigSide.COMMON` are mapped to the loader-specific config type by each platform. The optional file name is passed through to the loader API; omit it to use the loader default.
+Read values directly from the exported entries:
+
+```java
+if (ServerConfig.ENABLE_FEATURE.getAsBoolean()) {
+    int cacheSize = ServerConfig.Advanced.Performance.CACHE_SIZE.getAsInt();
+}
+```
+
+`ConfigSide.SERVER`, `ConfigSide.CLIENT`, and `ConfigSide.COMMON` are mapped to the loader-specific config type by each platform. Use `SERVER` for world/server-owned gameplay rules and balance values, `CLIENT` for local preferences such as rendering or UI options, and `COMMON` for installation-wide defaults that both physical sides load independently. The optional file name is passed through to the loader API; omit it to use the loader default.
 
 The common config declarations are loader-neutral. Each platform provides the dependency and registrar needed for its target, plus optional client-side helpers when it exposes a config screen:
 
@@ -158,17 +268,6 @@ The common config declarations are loader-neutral. Each platform provides the de
 | Fabric platforms       | Forge Config API Port, declared per Minecraft version | Forge Config API Port registry                   | [ModMenu](https://modrinth.com/mod/modmenu/) for the mod list entry; [Forge Config Screens](https://modrinth.com/mod/forge-config-screens) on <=mc1.20.1 |
 
 Because of this, the same `ConfigDeclaration` list can be shared from `common`, extended by a version-specific common project, and then bound by each platform to the dependency it actually runs with.
-
-The builder supports primitive values, ranged numbers, strings, lists, enums, and nested sections:
-
-```java
-BUILDER.comment("Max stored items")
-        .defineInRange("maxStoredItems", 64, 1, 4096);
-BUILDER.comment("Allowed item ids")
-        .defineList("allowedItems", List.of("minecraft:stone"), () -> "minecraft:stone", value -> value instanceof String);
-BUILDER.comment("Advanced settings")
-        .category("advanced", AdvancedConfig.ENTRIES);
-```
 
 The template registers `ModConfigs.ALL` directly. Use this when every included target can share the same config files:
 
@@ -188,8 +287,6 @@ When a version-specific common project such as `26.1.2-common` needs extra entri
 public final class VersionedModConfigs {
     public static final List<ConfigDeclaration> ALL =
             ConfigDeclarations.append(ModConfigs.ALL, ModConfigs.SERVER, VersionedServerConfig.ENTRIES);
-
-    private VersionedModConfigs() {}
 }
 ```
 
@@ -262,15 +359,35 @@ base work on your repository, and save any local changes first.
 <details>
 <summary>If downstream development has already started</summary>
 
-If you do not want to rewrite history, merge the template history instead:
+If downstream work already exists, replay those commits on top of the template
+history instead:
 
 ```sh
-git merge --allow-unrelated-histories upstream/main
+git switch main
+git branch downstream-before-template-sync
+git switch -c template-sync upstream/main
+template_snapshot=$(git rev-list --max-parents=0 downstream-before-template-sync)
+git cherry-pick --empty=drop "$template_snapshot"..downstream-before-template-sync
 ```
 
-This keeps your existing commits and creates a merge commit that connects the
-two histories. You may need to resolve conflicts when both repositories changed
-the same files.
+This creates a branch with the template history as its base, then applies your
+existing commits in their original order. The initial template snapshot commit
+is excluded because it usually duplicates files that already exist in
+`upstream/main`. If Git reports conflicts, resolve them, run `git add` for the
+resolved files, then continue with `git cherry-pick --continue`. Empty commits
+are dropped when they duplicate the template contents.
+
+After checking that the result is correct, replace `main` with the replayed
+history:
+
+```sh
+git switch main
+git reset --hard template-sync
+git push --force-with-lease origin main
+```
+
+Keep `downstream-before-template-sync` until you have confirmed that the pushed
+branch contains all of your downstream changes.
 
 </details>
 
