@@ -35,8 +35,12 @@ public class ASLangGen {
         protected void addTranslations() {
             for (var value : CustomButtonTooltips.class.getEnumConstants()) {
                 this.add(value.getTranslationKey(), switch (value) {
-                    case InternalId -> "数値ID";
-                    case ResourceLocation -> "リソース名";
+                    case DefaultSort -> "デフォルト";
+                    case DefaultSortHint -> "AE2にソートを委ねる";
+                    case InternalId -> "内部ID";
+                    case InternalIdHint -> "ゲームへの登録順でソート";
+                    case ResourceLocation -> "名前空間ID";
+                    case ResourceLocationHint -> "Identifier順でソート";
                 });
             }
         }

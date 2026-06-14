@@ -75,39 +75,28 @@ public class ConfigToggleButton<T extends Enum<T>> extends CustomIconButton {
             appearances = new HashMap<>();
 
             registerApp(
+                    Icon.SORT_BY_NAME.getBlitter(),
+                    ClientConfig.ALTERNATIVE_SORT,
+                    SortBy.DEFAULT,
+                    ButtonToolTips.SortBy,
+                    CustomButtonTooltips.DefaultSort,
+                    CustomButtonTooltips.DefaultSortHint
+            );
+            registerApp(
                     CustomIcon.SORT_BY_ID.getBlitter(),
                     ClientConfig.ALTERNATIVE_SORT,
                     SortBy.INTERNAL_ID,
                     ButtonToolTips.SortBy,
-                    CustomButtonTooltips.InternalId
+                    CustomButtonTooltips.InternalId,
+                    CustomButtonTooltips.InternalIdHint
             );
             registerApp(
                     CustomIcon.SORT_BY_RESOURCE_LOCATION.getBlitter(),
                     ClientConfig.ALTERNATIVE_SORT,
                     SortBy.RESOURCE_LOCATION,
                     ButtonToolTips.SortBy,
-                    CustomButtonTooltips.ResourceLocation
-            );
-            registerApp(
-                    Icon.SORT_BY_NAME.getBlitter(),
-                    ClientConfig.ALTERNATIVE_SORT,
-                    SortBy.NAME,
-                    ButtonToolTips.SortBy,
-                    ButtonToolTips.ItemName
-            );
-            registerApp(
-                    Icon.SORT_BY_AMOUNT.getBlitter(),
-                    ClientConfig.ALTERNATIVE_SORT,
-                    SortBy.AMOUNT,
-                    ButtonToolTips.SortBy,
-                    ButtonToolTips.NumberOfItems
-            );
-            registerApp(
-                    Icon.SORT_BY_MOD.getBlitter(),
-                    ClientConfig.ALTERNATIVE_SORT,
-                    SortBy.MOD,
-                    ButtonToolTips.SortBy,
-                    ButtonToolTips.Mod
+                    CustomButtonTooltips.ResourceLocation,
+                    CustomButtonTooltips.ResourceLocationHint
             );
         }
     }
@@ -134,8 +123,8 @@ public class ConfigToggleButton<T extends Enum<T>> extends CustomIconButton {
         appearances.put(new EnumPair<>(setting, val), new ButtonAppearance(null, item.asItem(), lines));
     }
 
-    private static <T extends Enum<T>> void registerApp(Blitter blitter, ConfigEntry.EnumEntry<T> setting, T val, LocalizationEnum title, LocalizationEnum hint) {
-        registerApp(blitter, setting, val, title, hint.text());
+    private static <T extends Enum<T>> void registerApp(Blitter blitter, ConfigEntry.EnumEntry<T> setting, T val, LocalizationEnum title, LocalizationEnum... hints) {
+        registerApp(blitter, setting, val, title, Arrays.stream(hints).map(LocalizationEnum::text).toArray(Component[]::new));
     }
 
     private void triggerPress() {

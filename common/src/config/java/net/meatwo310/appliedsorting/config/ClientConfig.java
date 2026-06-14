@@ -8,12 +8,13 @@ public final class ClientConfig {
     private static final ConfigEntryBuilder BUILDER = new ConfigEntryBuilder();
 
     public static final ConfigEntry.EnumEntry<SortBy> ALTERNATIVE_SORT = BUILDER
-            .comment("Replaces the default sorting with the selected option")
-            .defineEnum("alternativeSort", SortBy.INTERNAL_ID);
+            .comment("Overrides the AE2 sort method when set to a non-default option")
+            .defineEnum("alternativeSort", SortBy.DEFAULT);
 
+    @Deprecated
     public static final ConfigEntry.BooleanEntry REMOVE_DEFAULT_SORT_BUTTON = BUILDER
             .comment("Removes the default sort button from the ME terminal")
-            .define("removeDefaultSortButton", true);
+            .define("removeDefaultSortButton", false);
 
     private static final ConfigEntries RESOURCE_LOCATION = BUILDER
             .category("byResourceLocation", ByResourceLocation.ENTRIES);

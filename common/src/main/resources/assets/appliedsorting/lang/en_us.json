@@ -1,4 +1,8 @@
 {
+  "gui.tooltips.appliedsorting.DefaultSort": "Default",
+  "gui.tooltips.appliedsorting.DefaultSortHint": "Let AE2 handle sorting",
   "gui.tooltips.appliedsorting.InternalId": "Internal ID",
-  "gui.tooltips.appliedsorting.ResourceLocation": "Resource Location"
+  "gui.tooltips.appliedsorting.InternalIdHint": "Sort by the order registered to the game",
+  "gui.tooltips.appliedsorting.ResourceLocation": "Resource Location",
+  "gui.tooltips.appliedsorting.ResourceLocationHint": "Sort by identifier"
 }
