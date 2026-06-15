@@ -17,7 +17,7 @@ import java.util.Comparator;
 public abstract class RepoMixin {
     @Inject(method = "getComparator", at = @At("HEAD"), cancellable = true)
     private void injectGetComparator(SortOrder sortOrder, SortDir sortDir, CallbackInfoReturnable<Comparator<? super GridInventoryEntry>> cir) {
-        var customOrder = ClientConfig.ALTERNATIVE_SORT.get();
+        var customOrder = ClientConfig.SORT_OVERRIDE.get();
         Sorter.sort(sortDir, customOrder)
                 .ifPresent(comparator -> cir.setReturnValue(Comparator.comparing(GridInventoryEntry::getWhat, comparator)));
     }

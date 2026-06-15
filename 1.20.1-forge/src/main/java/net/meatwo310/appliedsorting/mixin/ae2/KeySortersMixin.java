@@ -16,6 +16,6 @@ import java.util.Comparator;
 public class KeySortersMixin {
     @Inject(method = "getComparator", at = @At("HEAD"), cancellable = true)
     private static void injectComparator(SortOrder order, SortDir dir, CallbackInfoReturnable<Comparator<AEKey>> cir) {
-        Sorter.sort(dir, ClientConfig.ALTERNATIVE_SORT.get()).ifPresent(cir::setReturnValue);
+        Sorter.sort(dir, ClientConfig.SORT_OVERRIDE.get()).ifPresent(cir::setReturnValue);
     }
 }

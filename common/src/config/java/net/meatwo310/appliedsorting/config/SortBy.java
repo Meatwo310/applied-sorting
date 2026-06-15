@@ -4,10 +4,4 @@ public enum SortBy {
     DEFAULT,
     INTERNAL_ID,
     RESOURCE_LOCATION,
-    @Deprecated
-    NAME,
-    @Deprecated
-    AMOUNT,
-    @Deprecated
-    MOD
 }

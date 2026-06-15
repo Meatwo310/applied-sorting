@@ -76,7 +76,7 @@ public class ConfigToggleButton<T extends Enum<T>> extends CustomIconButton {
 
             registerApp(
                     Icon.SORT_BY_NAME.getBlitter(),
-                    ClientConfig.ALTERNATIVE_SORT,
+                    ClientConfig.SORT_OVERRIDE,
                     SortBy.DEFAULT,
                     ButtonToolTips.SortBy,
                     CustomButtonTooltips.DefaultSort,
@@ -84,7 +84,7 @@ public class ConfigToggleButton<T extends Enum<T>> extends CustomIconButton {
             );
             registerApp(
                     CustomIcon.SORT_BY_ID.getBlitter(),
-                    ClientConfig.ALTERNATIVE_SORT,
+                    ClientConfig.SORT_OVERRIDE,
                     SortBy.INTERNAL_ID,
                     ButtonToolTips.SortBy,
                     CustomButtonTooltips.InternalId,
@@ -92,7 +92,7 @@ public class ConfigToggleButton<T extends Enum<T>> extends CustomIconButton {
             );
             registerApp(
                     CustomIcon.SORT_BY_RESOURCE_LOCATION.getBlitter(),
-                    ClientConfig.ALTERNATIVE_SORT,
+                    ClientConfig.SORT_OVERRIDE,
                     SortBy.RESOURCE_LOCATION,
                     ButtonToolTips.SortBy,
                     CustomButtonTooltips.ResourceLocation,

@@ -7,16 +7,11 @@ import net.meatwo310.appliedsorting.mdk.config.ConfigEntryBuilder;
 public final class ClientConfig {
     private static final ConfigEntryBuilder BUILDER = new ConfigEntryBuilder();
 
-    public static final ConfigEntry.EnumEntry<SortBy> ALTERNATIVE_SORT = BUILDER
+    public static final ConfigEntry.EnumEntry<SortBy> SORT_OVERRIDE = BUILDER
             .comment("Overrides the AE2 sort method when set to a non-default option")
-            .defineEnum("alternativeSort", SortBy.DEFAULT);
+            .defineEnum("sortOverride", SortBy.DEFAULT);
 
-    @Deprecated
-    public static final ConfigEntry.BooleanEntry REMOVE_DEFAULT_SORT_BUTTON = BUILDER
-            .comment("Removes the default sort button from the ME terminal")
-            .define("removeDefaultSortButton", false);
-
-    private static final ConfigEntries RESOURCE_LOCATION = BUILDER
+    private static final ConfigEntries BY_RESOURCE_LOCATION = BUILDER
             .category("byResourceLocation", ByResourceLocation.ENTRIES);
 
     public static final class ByResourceLocation {

@@ -33,13 +33,13 @@ public abstract class MEStorageScreenMixin {
         var verticalToolbar = ((AEBaseScreenAccessor) this).getVerticalToolbar();
         var buttons = ((VerticalButtonBarInvoker) verticalToolbar).getButtons();
 
-        var selectedSort = ClientConfig.ALTERNATIVE_SORT.get();
+        var selectedSort = ClientConfig.SORT_OVERRIDE.get();
         if (!isOverrideSort(selectedSort)) {
             selectedSort = SortBy.DEFAULT;
-            ClientConfig.ALTERNATIVE_SORT.set(selectedSort);
+            ClientConfig.SORT_OVERRIDE.set(selectedSort);
         }
 
-        var button = new ConfigToggleButton<>(ClientConfig.ALTERNATIVE_SORT, selectedSort, MEStorageScreenMixin::isOverrideSort, (btn, backwards) -> {
+        var button = new ConfigToggleButton<>(ClientConfig.SORT_OVERRIDE, selectedSort, MEStorageScreenMixin::isOverrideSort, (btn, backwards) -> {
             btn.toggleConfig(backwards);
             repo.updateView();
         });
