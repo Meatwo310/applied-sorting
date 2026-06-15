@@ -7,9 +7,8 @@ import appeng.client.gui.style.ScreenStyle;
 import appeng.client.gui.style.TerminalStyle;
 import appeng.client.gui.widgets.SettingToggleButton;
 import appeng.menu.me.common.MEStorageMenu;
-import net.meatwo310.appliedsorting.ae2.ConfigToggleButton;
+import net.meatwo310.appliedsorting.ae2.SortOverrideButton;
 import net.meatwo310.appliedsorting.config.ClientConfig;
-import net.meatwo310.appliedsorting.config.SortBy;
 import net.meatwo310.appliedsorting.util.CollectionUtils;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Inventory;
@@ -33,22 +32,14 @@ public abstract class MEStorageScreenMixin {
         var verticalToolbar = ((AEBaseScreenAccessor) this).getVerticalToolbar();
         var buttons = ((VerticalButtonBarInvoker) verticalToolbar).getButtons();
 
-        var selectedSort = ClientConfig.SORT_OVERRIDE.get();
-        if (!isOverrideSort(selectedSort)) {
-            selectedSort = SortBy.DEFAULT;
+        var selectedSort = SortOverrideButton.sanitize(ClientConfig.SORT_OVERRIDE.get());
+        if (selectedSort != ClientConfig.SORT_OVERRIDE.get()) {
             ClientConfig.SORT_OVERRIDE.set(selectedSort);
         }
 
-        var button = new ConfigToggleButton<>(ClientConfig.SORT_OVERRIDE, selectedSort, MEStorageScreenMixin::isOverrideSort, (btn, backwards) -> {
-            btn.toggleConfig(backwards);
-            repo.updateView();
-        });
+        var button = new SortOverrideButton(selectedSort, repo::updateView);
 
         var index = CollectionUtils.indexOfOr(buttons, sortByToggle, 2);
         buttons.add(index + 1, button);
-    }
-
-    private static boolean isOverrideSort(SortBy sortBy) {
-        return sortBy == SortBy.DEFAULT || sortBy == SortBy.INTERNAL_ID || sortBy == SortBy.RESOURCE_LOCATION;
     }
 }
