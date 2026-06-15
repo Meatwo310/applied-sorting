@@ -4,7 +4,6 @@ import appeng.client.gui.AEBaseScreen;
 import appeng.client.gui.Icon;
 import appeng.client.gui.style.Blitter;
 import appeng.client.gui.widgets.ITooltip;
-import appeng.core.localization.ButtonToolTips;
 import com.mojang.blaze3d.systems.RenderSystem;
 import net.meatwo310.appliedsorting.Constants;
 import net.meatwo310.appliedsorting.config.ClientConfig;
@@ -102,13 +101,13 @@ public final class SortOverrideButton extends Button implements ITooltip {
     public List<Component> getTooltipMessage() {
         return switch (this.value) {
             case DEFAULT -> List.of(
-                    ButtonToolTips.SortBy.text(),
+                    Component.translatable(Constants.TOOLTIP_SORT_OVERRIDE),
                     Component.translatable(Constants.TOOLTIP_DEFAULT_SORT));
             case INTERNAL_ID -> List.of(
-                    ButtonToolTips.SortBy.text(),
+                    Component.translatable(Constants.TOOLTIP_SORT_OVERRIDE),
                     Component.translatable(Constants.TOOLTIP_INTERNAL_ID));
             case RESOURCE_LOCATION -> List.of(
-                    ButtonToolTips.SortBy.text(),
+                    Component.translatable(Constants.TOOLTIP_SORT_OVERRIDE),
                     Component.translatable(Constants.TOOLTIP_RESOURCE_LOCATION));
         };
     }

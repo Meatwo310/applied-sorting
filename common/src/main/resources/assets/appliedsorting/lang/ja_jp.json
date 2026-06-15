@@ -1,6 +1,7 @@
 {
-  "gui.tooltips.appliedsorting.DefaultSort": "オーバーライドしない",
+  "gui.tooltips.appliedsorting.DefaultSort": "AE2に委ねる",
+  "gui.tooltips.appliedsorting.SortOverride": "並び替え (オーバーライド)",
   "gui.tooltips.appliedsorting.InternalId": "内部ID",
   "gui.tooltips.appliedsorting.ResourceLocation": "名前空間ID",
-  "gui.tooltips.appliedsorting.SortOverridden": "Applied Sortingにオーバーライドされています"
+  "gui.tooltips.appliedsorting.SortOverridden": "Applied Sortingにより上書き"
 }
