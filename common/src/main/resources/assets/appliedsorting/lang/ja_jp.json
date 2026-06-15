@@ -1,5 +1,5 @@
 {
-  "gui.tooltips.appliedsorting.DefaultSort": "デフォルト",
+  "gui.tooltips.appliedsorting.DefaultSort": "オーバーライドしない",
   "gui.tooltips.appliedsorting.InternalId": "内部ID",
   "gui.tooltips.appliedsorting.ResourceLocation": "名前空間ID"
 }

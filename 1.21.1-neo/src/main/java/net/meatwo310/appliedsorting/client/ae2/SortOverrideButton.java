@@ -101,7 +101,7 @@ public final class SortOverrideButton extends Button implements ITooltip {
 
     private Blitter icon() {
         return switch (this.value) {
-            case DEFAULT -> Icon.SORT_BY_NAME.getBlitter();
+            case DEFAULT -> Icon.POWER_UNIT_AE.getBlitter();
             case INTERNAL_ID -> CustomIcon.SORT_BY_ID.getBlitter();
             case RESOURCE_LOCATION -> CustomIcon.SORT_BY_RESOURCE_LOCATION.getBlitter();
         };

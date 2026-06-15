@@ -1,5 +1,5 @@
 {
-  "gui.tooltips.appliedsorting.DefaultSort": "Default",
+  "gui.tooltips.appliedsorting.DefaultSort": "Do not override",
   "gui.tooltips.appliedsorting.InternalId": "Internal ID",
   "gui.tooltips.appliedsorting.ResourceLocation": "Resource Location"
 }
