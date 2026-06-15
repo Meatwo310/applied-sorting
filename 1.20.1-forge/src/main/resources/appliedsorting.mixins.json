@@ -10,6 +10,7 @@
     "ae2.KeySortersMixin",
     "ae2.MEStorageScreenMixin",
     "ae2.RepoMixin",
+    "ae2.SettingToggleButtonMixin",
     "ae2.VerticalButtonBarInvoker"
   ],
   "injectors": {
