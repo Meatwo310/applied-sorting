@@ -9,7 +9,7 @@ public final class ClientConfig {
 
     public static final ConfigEntry.EnumEntry<SortBy> SORT_OVERRIDE = BUILDER
             .comment("Overrides the AE2 sort method when set to a non-default option")
-            .defineEnum("sortOverride", SortBy.DEFAULT);
+            .defineEnum("sortOverride", SortBy.INTERNAL_ID);
 
     private static final ConfigEntries BY_RESOURCE_LOCATION = BUILDER
             .category("byResourceLocation", ByResourceLocation.ENTRIES);
