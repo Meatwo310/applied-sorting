@@ -22,5 +22,4 @@
 
 ## 📜 License
 This project is licensed under the MIT License.
-It also incorporates some source code from Applied Energistics 2, which is licensed under LGPL-3.0-or-later.
 Many thanks to TeamAppliedEnergistics for developing such a wonderful mod.
