@@ -1,8 +1,5 @@
 {
   "gui.tooltips.appliedsorting.DefaultSort": "デフォルト",
-  "gui.tooltips.appliedsorting.DefaultSortHint": "AE2にソートを委ねる",
   "gui.tooltips.appliedsorting.InternalId": "内部ID",
-  "gui.tooltips.appliedsorting.InternalIdHint": "ゲームへの登録順でソート",
-  "gui.tooltips.appliedsorting.ResourceLocation": "名前空間ID",
-  "gui.tooltips.appliedsorting.ResourceLocationHint": "Identifier順でソート"
+  "gui.tooltips.appliedsorting.ResourceLocation": "名前空間ID"
 }

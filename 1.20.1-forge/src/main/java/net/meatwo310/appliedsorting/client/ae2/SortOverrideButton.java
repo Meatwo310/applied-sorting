@@ -103,16 +103,13 @@ public final class SortOverrideButton extends Button implements ITooltip {
         return switch (this.value) {
             case DEFAULT -> List.of(
                     ButtonToolTips.SortBy.text(),
-                    Component.translatable(Constants.TOOLTIP_DEFAULT_SORT),
-                    Component.translatable(Constants.TOOLTIP_DEFAULT_SORT_HINT));
+                    Component.translatable(Constants.TOOLTIP_DEFAULT_SORT));
             case INTERNAL_ID -> List.of(
                     ButtonToolTips.SortBy.text(),
-                    Component.translatable(Constants.TOOLTIP_INTERNAL_ID),
-                    Component.translatable(Constants.TOOLTIP_INTERNAL_ID_HINT));
+                    Component.translatable(Constants.TOOLTIP_INTERNAL_ID));
             case RESOURCE_LOCATION -> List.of(
                     ButtonToolTips.SortBy.text(),
-                    Component.translatable(Constants.TOOLTIP_RESOURCE_LOCATION),
-                    Component.translatable(Constants.TOOLTIP_RESOURCE_LOCATION_HINT));
+                    Component.translatable(Constants.TOOLTIP_RESOURCE_LOCATION));
         };
     }
 
