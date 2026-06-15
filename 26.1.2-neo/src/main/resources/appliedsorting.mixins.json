@@ -3,7 +3,16 @@
   "minVersion": "0.8",
   "package": "net.meatwo310.appliedsorting.mixin",
   "compatibilityLevel": "JAVA_25",
-  "mixins": [],
+  "mixins": [
+  ],
+  "client": [
+    "ae2.AEBaseScreenAccessor",
+    "ae2.KeySortersMixin",
+    "ae2.MEStorageScreenMixin",
+    "ae2.RepoMixin",
+    "ae2.SettingToggleButtonMixin",
+    "ae2.VerticalButtonBarAccessor"
+  ],
   "injectors": {
     "defaultRequire": 1
   },
