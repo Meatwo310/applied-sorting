@@ -6,7 +6,7 @@ import appeng.client.gui.me.common.Repo;
 import appeng.client.gui.style.ScreenStyle;
 import appeng.client.gui.widgets.SettingToggleButton;
 import appeng.menu.me.common.MEStorageMenu;
-import net.meatwo310.appliedsorting.ae2.SortOverrideButton;
+import net.meatwo310.appliedsorting.client.ae2.SortOverrideButton;
 import net.meatwo310.appliedsorting.config.ClientConfig;
 import net.meatwo310.appliedsorting.util.CollectionUtils;
 import net.minecraft.network.chat.Component;

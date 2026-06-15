@@ -9,4 +9,11 @@ public final class Constants {
     public static final String MODID = "appliedsorting";
     public static final Logger LOGGER = LoggerFactory.getLogger(MODID);
     public static final String INITIALIZING = "Initializing {}";
+
+    public static final String TOOLTIP_DEFAULT_SORT = "gui.tooltips.appliedsorting.DefaultSort";
+    public static final String TOOLTIP_DEFAULT_SORT_HINT = "gui.tooltips.appliedsorting.DefaultSortHint";
+    public static final String TOOLTIP_INTERNAL_ID = "gui.tooltips.appliedsorting.InternalId";
+    public static final String TOOLTIP_INTERNAL_ID_HINT = "gui.tooltips.appliedsorting.InternalIdHint";
+    public static final String TOOLTIP_RESOURCE_LOCATION = "gui.tooltips.appliedsorting.ResourceLocation";
+    public static final String TOOLTIP_RESOURCE_LOCATION_HINT = "gui.tooltips.appliedsorting.ResourceLocationHint";
 }

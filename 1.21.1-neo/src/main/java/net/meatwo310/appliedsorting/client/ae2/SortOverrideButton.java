@@ -1,4 +1,4 @@
-package net.meatwo310.appliedsorting.ae2;
+package net.meatwo310.appliedsorting.client.ae2;
 
 import appeng.client.gui.AEBaseScreen;
 import appeng.client.gui.Icon;
@@ -6,6 +6,7 @@ import appeng.client.gui.style.Blitter;
 import appeng.client.gui.widgets.ITooltip;
 import appeng.core.localization.ButtonToolTips;
 import com.mojang.blaze3d.systems.RenderSystem;
+import net.meatwo310.appliedsorting.Constants;
 import net.meatwo310.appliedsorting.config.ClientConfig;
 import net.meatwo310.appliedsorting.config.SortBy;
 import net.minecraft.client.Minecraft;
@@ -14,6 +15,7 @@ import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.client.renderer.Rect2i;
 import net.minecraft.network.chat.Component;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
 
@@ -73,7 +75,7 @@ public final class SortOverrideButton extends Button implements ITooltip {
     }
 
     @Override
-    public void renderWidget(GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
+    protected void renderWidget(@NotNull GuiGraphics guiGraphics, int mouseX, int mouseY, float partialTick) {
         if (!this.visible) {
             return;
         }
@@ -81,12 +83,20 @@ public final class SortOverrideButton extends Button implements ITooltip {
         RenderSystem.disableDepthTest();
         RenderSystem.enableBlend();
 
-        Icon.TOOLBAR_BUTTON_BACKGROUND.getBlitter()
-                .dest(getX(), getY())
-                .blit(guiGraphics);
-        icon().dest(getX(), getY()).blit(guiGraphics);
+        background().dest(getX() - 1, getY() + (isHovered() ? 1 : 0)).blit(guiGraphics);
+        icon().dest(getX(), getY() + (isHovered() ? 2 : 1)).blit(guiGraphics);
 
         RenderSystem.enableDepthTest();
+    }
+
+    private Blitter background() {
+        if (isHovered()) {
+            return Icon.TOOLBAR_BUTTON_BACKGROUND_HOVER.getBlitter();
+        }
+        if (isFocused()) {
+            return Icon.TOOLBAR_BUTTON_BACKGROUND_FOCUS.getBlitter();
+        }
+        return Icon.TOOLBAR_BUTTON_BACKGROUND.getBlitter();
     }
 
     private Blitter icon() {
@@ -102,16 +112,16 @@ public final class SortOverrideButton extends Button implements ITooltip {
         return switch (this.value) {
             case DEFAULT -> List.of(
                     ButtonToolTips.SortBy.text(),
-                    CustomButtonTooltips.DefaultSort.text(),
-                    CustomButtonTooltips.DefaultSortHint.text());
+                    Component.translatable(Constants.TOOLTIP_DEFAULT_SORT),
+                    Component.translatable(Constants.TOOLTIP_DEFAULT_SORT_HINT));
             case INTERNAL_ID -> List.of(
                     ButtonToolTips.SortBy.text(),
-                    CustomButtonTooltips.InternalId.text(),
-                    CustomButtonTooltips.InternalIdHint.text());
+                    Component.translatable(Constants.TOOLTIP_INTERNAL_ID),
+                    Component.translatable(Constants.TOOLTIP_INTERNAL_ID_HINT));
             case RESOURCE_LOCATION -> List.of(
                     ButtonToolTips.SortBy.text(),
-                    CustomButtonTooltips.ResourceLocation.text(),
-                    CustomButtonTooltips.ResourceLocationHint.text());
+                    Component.translatable(Constants.TOOLTIP_RESOURCE_LOCATION),
+                    Component.translatable(Constants.TOOLTIP_RESOURCE_LOCATION_HINT));
         };
     }
 
