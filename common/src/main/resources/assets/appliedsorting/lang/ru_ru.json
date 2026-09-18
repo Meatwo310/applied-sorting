@@ -1,0 +1,7 @@
+{
+  "gui.tooltips.appliedsorting.DefaultSort": "Передать управление AE2",
+  "gui.tooltips.appliedsorting.SortOverride": "Переопределение сортировки",
+  "gui.tooltips.appliedsorting.InternalId": "Внутренний ID",
+  "gui.tooltips.appliedsorting.ResourceLocation": "Идентификатор ресурса",
+  "gui.tooltips.appliedsorting.SortOverridden": "Переопределено модом Applied Sorting"
+}
