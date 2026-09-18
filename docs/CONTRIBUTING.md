@@ -1,5 +1,16 @@
 # Contributing
 
+If you are working in `Meatwo310/custom-mdk` itself, follow
+[MDK Template Changes](#mdk-template-changes). Otherwise, follow
+[Commit Message Convention](#commit-message-convention).
+
+## Formatting
+
+Ensure every added or modified file follows the repository-root
+[`.editorconfig`](../.editorconfig). Enable EditorConfig support in your editor
+and resolve any formatting violations before submitting a change. The
+EditorConfig workflow checks changed files independently from the build.
+
 ## Commit Message Convention
 
 Commits should follow [Conventional Commits](https://www.conventionalcommits.org/):
@@ -10,7 +21,7 @@ type(scope): description
 
 Use the smallest scope that describes the affected area.
 
-## Scope Rules
+### Scope Rules
 
 Subprojects are named for shared code, Minecraft versions, and loader targets, such as `common`, `1.20.1-common`, `1.20.1-fabric`, `1.20.1-forge`, or `26.1.2-neo`. Versioned subprojects live under directories such as `1.20.1/common`, `1.20.1/fabric`, `1.20.1/forge`, or `26.1.2/neo`.
 
@@ -23,7 +34,7 @@ Subprojects are named for shared code, Minecraft versions, and loader targets, s
 | All subprojects equally                      | Scope is optional                                                        |
 | Root-level repository metadata only          | Scope is optional                                                        |
 
-## Recommended Types
+### Recommended Types
 
 `feat` / `fix` / `docs` / `style` / `refactor` / `perf` / `test` / `build` / `ci` / `chore` / `revert` / `release`
 
@@ -34,7 +45,7 @@ from release notes.
 Because these entries can appear in changelogs as written, prefer English for
 commit messages that may be included in release notes.
 
-## Examples
+### Examples
 
 ```
 feat(26.1.2-fabric): add config screen support
