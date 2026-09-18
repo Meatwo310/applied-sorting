@@ -54,9 +54,9 @@ include("26.1.2-common")
 include("26.1.2-neo")
 
 /// 26.2 ///
-include("26.2-common")
-include("26.2-fabric")
-include("26.2-neo")
+//include("26.2-common")
+//include("26.2-fabric")
+//include("26.2-neo")
 
 val ciBuildProjectNames = rootProject.children
     .map { it.name }
