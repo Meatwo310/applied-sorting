@@ -1,9 +1,9 @@
-package net.meatwo310.examplemod;
+package net.meatwo310.appliedsorting;
 
 import net.fabricmc.api.ModInitializer;
-import net.meatwo310.examplemod.config.ModConfigs;
-import net.meatwo310.examplemod.mdk.config.PlatformConfigRegistrar;
-import net.meatwo310.examplemod.mdk.config.VersionedConfigSpec;
+import net.meatwo310.appliedsorting.config.ModConfigs;
+import net.meatwo310.appliedsorting.mdk.config.PlatformConfigRegistrar;
+import net.meatwo310.appliedsorting.mdk.config.VersionedConfigSpec;
 
 public class ModMain implements ModInitializer {
     @Override

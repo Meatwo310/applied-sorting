@@ -1,4 +1,4 @@
-package net.meatwo310.examplemod.mdk.config;
+package net.meatwo310.appliedsorting.mdk.config;
 
 import net.minecraftforge.api.ModLoadingContext;
 import net.minecraftforge.fml.config.ModConfig;
