@@ -6,8 +6,8 @@ plugins {
 }
 
 // Mod Dependencies
-val ae2Version: String by project
-val guidemeVersion: String by project
+val ae2Version = project.property("ae2Version").toString()
+val guidemeVersion = project.property("guidemeVersion").toString()
 
 dependencies {
     implementation(libs.guideme, req(guidemeVersion))
