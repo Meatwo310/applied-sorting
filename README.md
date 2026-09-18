@@ -19,9 +19,12 @@
 - This mod is **client-side only**. You do not need to install it on the server.
 
 
-## 📜 License and Credits
+## 📜 License
 This project is licensed under the MIT License.
 
-Many thanks to TeamAppliedEnergistics for developing such a wonderful mod.  
-Thanks to [mochi-753](https://github.com/mochi-753/) for the initial 1.21.1 port.
 
+## 🙏 Credits
+
+- [TeamAppliedEnergistics](https://github.com/AppliedEnergistics/Applied-Energistics-2) for developing Applied Energistics 2
+- [mochi-753](https://github.com/mochi-753/) for the initial 1.21.1 port
+- [Argonas24](https://github.com/Argonas24) for the Russian translation
