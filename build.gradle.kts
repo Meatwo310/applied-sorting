@@ -14,13 +14,13 @@ plugins {
 
 modPublishing {
     curseForge {
-        // projectId.set("123456")
+        projectId.set("1337766")
         client.set(true)
-        server.set(true)
+        server.set(false)
     }
     modrinth {
-        // projectId.set("xxxxxxxx")
-        environment.set(CLIENT_AND_SERVER)
+        projectId.set("1vwGom2N")
+        environment.set(CLIENT_ONLY)
     }
 }
 
