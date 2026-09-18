@@ -4,20 +4,20 @@ A Minecraft mod template for multi-version and multi-loader development, powered
 
 ## Supported Platforms
 
-| Minecraft | Fabric | LexForge | NeoForge | Quilt |
-|-----------|:------:|:--------:|:--------:|:-----:|
-| <1.7.10   |   🚫   |    🚫    |    -     |  🚫   |
-| 1.7.10    |   🚫   |    ✅    |    -     |  🚫   |
-| 1.8–1.17  |   🚫   |    🚫    |    -     |  🚫   |
-| 1.18.2    |   ✅   |    ✅    |    -     |  🚫   |
-| 1.19.2    |   ✅   |    ✅    |    -     |  🚫   |
-| 1.20.1    |   ✅   |    ✅    |    🚫    |  🚫   |
-| 1.21.1    |   ✅   |    ✅    |    ✅    |  🚫   |
-| 1.21.8    |   ✅   |    ✅    |    ❌    |  🚫   |
-| 1.21.11   |   ✅   |    ✅    |    ❌    |  🚫   |
-| 26.1      |   ✅   |    ❌    |    ✅    |  🚫   |
-| 26.1.2    |   🌟   |    ❌    |    🌟    |  🚫   |
-| 26.2      |   ✅   |    🚫    |    ✅    |  🚫   |
+| Minecraft | Fabric | LexForge | NeoForge |
+|-----------|:------:|:--------:|:--------:|
+| 1.7.10    |   🚫   |    ✅    |    -     |
+| 1.12.2    |   🚫   |    ⏳    |    -     |
+| 1.16.5    |   🚫   |    🚫    |    -     |
+| 1.18.2    |   ✅   |    ✅    |    -     |
+| 1.19.2    |   ✅   |    ✅    |    -     |
+| 1.20.1    |   ✅   |    ✅    |    🚫    |
+| 1.21.1    |   ✅   |    ✅    |    ✅    |
+| 1.21.8    |   ✅   |    ✅    |    ❌    |
+| 1.21.11   |   ✅   |    ✅    |    ❌    |
+| 26.1      |   ✅   |    ❌    |    ✅    |
+| 26.1.2    |   🌟   |    ❌    |    🌟    |
+| 26.2      |   ✅   |    🚫    |    ✅    |
 
 🌟 Primary support | ✅ Supported | 🚧 Partial support | ⏳ Planned | ❌ Not supported yet | 🚫 Unsupported
 
@@ -121,6 +121,13 @@ Build a specific platform:
 ```
 
 Artifacts are written under each configured project directory, such as `26.1.2/fabric/build/libs/`. Additional runtime-only mod jars declared through `ciRuntimeMods` are collected under that project directory's `build/ciRuntimeMods/` for CI.
+
+Each loader convention declares its platform identity and the Gradle tasks that
+produce its release artifacts through `platformArtifacts`. The generated CI
+matrix records the actual archive file names from those tasks. A configured
+sources task makes its sources jar a required release artifact; omit the
+sources task declaration for a platform that deliberately does not generate
+one.
 
 ## Running
 
