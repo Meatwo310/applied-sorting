@@ -1,8 +1,18 @@
 import net.meatwo310.mdk.build.req
+import net.meatwo310.mdk.build.platformArtifacts
 
 plugins {
     id("lexforge-legacy-mod-conventions")
     id("lexforge-legacy-config-conventions")
+}
+
+platformArtifacts {
+    publishingDependencies {
+        required {
+            curseForge = "applied-energistics-2"
+            modrinth = "ae2"
+        }
+    }
 }
 
 val ae2Version = project.property("ae2Version").toString()
