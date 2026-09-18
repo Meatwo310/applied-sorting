@@ -5,15 +5,15 @@ plugins {
     id("lexforge-legacy-config-conventions")
 }
 
-val ae2Version: String by project
-val guidemeVersion: String by project
-val refinedStorageVersion: String by project
-val glodiumVersion: String by project
-val appliedFluxVersion: String by project
-val mekanismVersion: String by project
-val appliedMekanisticsVersion: String by project
-val catalogueVersion: String by project
-val configuredVersion: String by project
+val ae2Version = project.property("ae2Version").toString()
+val guidemeVersion = project.property("guidemeVersion").toString()
+val refinedStorageVersion = project.property("refinedStorageVersion").toString()
+val glodiumVersion = project.property("glodiumVersion").toString()
+val appliedFluxVersion = project.property("appliedFluxVersion").toString()
+val mekanismVersion = project.property("mekanismVersion").toString()
+val appliedMekanisticsVersion = project.property("appliedMekanisticsVersion").toString()
+val catalogueVersion = project.property("catalogueVersion").toString()
+val configuredVersion = project.property("configuredVersion").toString()
 
 // Mod Dependencies
 dependencies {
