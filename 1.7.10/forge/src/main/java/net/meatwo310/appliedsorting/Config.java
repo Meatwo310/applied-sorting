@@ -1,4 +1,4 @@
-package net.meatwo310.examplemod;
+package net.meatwo310.appliedsorting;
 
 import java.io.File;
 

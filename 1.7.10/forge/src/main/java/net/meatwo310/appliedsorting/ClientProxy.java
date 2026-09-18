@@ -1,4 +1,4 @@
-package net.meatwo310.examplemod;
+package net.meatwo310.appliedsorting;
 
 public class ClientProxy extends CommonProxy {
 
